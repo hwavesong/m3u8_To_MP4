@@ -1,4 +1,4 @@
-.. image:: https://img.shields.io/pypi/v/0.1.0   :alt: PyPI
+.. image:: https://img.shields.io/pypi/v/0.1.1   :alt: PyPI
 
 
 m3u8-To-MP4
@@ -41,5 +41,15 @@ Resume the transfer from the point of interruption, use the `tmpdir` arguement:
 
     m3u8_to_mp4.download('http://videoserver.com/playlist.m3u8',tmpdir='/tmp/m3u8_xx')
 
+
+
+
+Features
+=============
+#. Treat ffmpeg as a system service to achieve cross-platform.
+#. Resume from interruption.
+#. Use system tmp folder.
+#. Concurrent requests based on the thread pool.
+#. The retry strategy is carried out collectively after the whole cycle is repeated, avoiding the problem of short retry interval.
 
 .. _ffmpeg: http://www.ffmpeg.org/download.html
