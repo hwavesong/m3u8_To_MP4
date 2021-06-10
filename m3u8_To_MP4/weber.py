@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import urllib.error
 import urllib.request
 import urllib.response
 
@@ -12,7 +13,7 @@ def get_headers():
 
 def request_for(url, max_try_times=1, headers=None, data=None, timeout=30,
                 proxy_ip=None, verify=False):
-    is_successful = False
+    response_code = -1
     response_content = None
 
     for num_retry in range(max_try_times):
@@ -20,26 +21,25 @@ def request_for(url, max_try_times=1, headers=None, data=None, timeout=30,
             headers = get_headers()
 
         try:
-            if data == None:
-                request = urllib.request.Request(url=url, headers=headers,
-                                                 method='get')
-            else:
-                request = urllib.request.Request(url=url, data=data,
-                                                 headers=headers,
-                                                 method='post')
+            request = urllib.request.Request(url=url, data=data,
+                                             headers=headers)
 
             with urllib.request.urlopen(url=request,
                                         timeout=timeout) as response:
+                response_code = response.getcode()
                 response_content = response.read()
 
-            is_successful = True
-            break
-
+            if response_code == 200:
+                break
+        except urllib.error.HTTPError as he:
+            response_code = he.code
+        except urllib.error.ContentTooShortError as ctse:
+            response_code = -2  # -2:ctse
+        except urllib.error.URLError as ue:
+            response_code = -3  # -3:URLError
         except Exception as exc:
-            # logging.exception(exc)
-            timeout += 2
+            response_code = -4  # other error
         finally:
-            pass
-            # response.close()
+            timeout += 2
 
-    return is_successful, response_content
+    return response_code, response_content
