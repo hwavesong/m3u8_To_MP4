@@ -8,7 +8,7 @@ import sys
 
 class ProcessBar:
     def __init__(self, progress, max_iter, prefix='Progress',
-                 suffix='complete',
+                 suffix='downloading',
                  completed_suffix='completed', bar_length=50):
         self.progress = progress
         self.max_iter = max_iter
@@ -47,8 +47,9 @@ class ProcessBar:
 
 
 def resolve_file_name_by_uri(uri):
-    pattern = r".*\/(.*)"
-    file_name = re.findall(pattern=pattern, string=uri)[0]
+    # pattern = r"\/+(.*)"
+    # file_name = re.findall(pattern=pattern, string=uri)[0]
+    file_name=uri.split('/')[-1]
     return file_name
 
 
