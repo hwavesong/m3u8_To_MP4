@@ -13,7 +13,7 @@ install_reqs = [req for req in
 
 setup(
     name='m3u8-To-MP4',
-    version="0.1.0",
+    version="0.1.1",
     description="Python downloader for saving m3u8 video to local MP4 file.",
     long_description_content_type="text/x-rst",
     long_description=long_description,
