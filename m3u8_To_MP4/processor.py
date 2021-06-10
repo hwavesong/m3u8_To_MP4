@@ -17,9 +17,9 @@ from m3u8_To_MP4.weber import request_for
 
 
 def download_segment(segment_url):
-    is_successful, response_content = request_for(segment_url)
+    response_code, response_content = request_for(segment_url)
 
-    return is_successful, response_content
+    return response_code, response_content
 
 
 EncryptedKey = collections.namedtuple(typename='EncryptedKey',
@@ -123,9 +123,9 @@ class Crawler(object):
         key_segments_pairs = list()
         for key in m3u8_obj.keys:
             if key:
-                is_successful, encryped_value = request_for(key.absolute_uri,
+                response_code, encryped_value = request_for(key.absolute_uri,
                                                             max_try_times=self.max_retry_times)
-                if not is_successful:
+                if response_code!=200:
                     raise Exception('DOWNLOAD KEY FAILED, URI IS {}'.format(
                         key.absolute_uri))
 
@@ -175,13 +175,13 @@ class Crawler(object):
                             future_2_segment_uri):
                         segment_uri = future_2_segment_uri[future]
                         try:
-                            request_is_successful, response_content = future.result()
+                            response_code, response_content = future.result()
                         except Exception as exc:
                             logging.exception(
                                 '{} generated an exception: {}'.format(
                                     segment_uri, exc))
 
-                        if request_is_successful:
+                        if response_code==200:
                             segment_url_to_encrypted_content.append(
                                 (segment_uri, response_content))
 
