@@ -104,7 +104,7 @@ class Crawler(object):
                     best_bandwidth_m3u8_uri = playlist.absolute_uri
 
             logging.info(
-                "choose the best bandwith, which is {}".format(best_bandwidth))
+                "choose the best bandwidth, which is {}".format(best_bandwidth))
             logging.info("m3u8 uri is {}".format(best_bandwidth_m3u8_uri))
 
             m3u8_obj = self._get_m3u8_obj_by_uri(best_bandwidth_m3u8_uri)
