@@ -123,6 +123,8 @@ class Crawler(object):
         key_segments_pairs = list()
         for key in m3u8_obj.keys:
             if key:
+                if key.method.lower()=='none':
+                    continue
                 response_code, encryped_value = request_for(key.absolute_uri,
                                                             max_try_times=self.max_retry_times)
                 if response_code!=200:

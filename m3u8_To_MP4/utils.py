@@ -80,5 +80,5 @@ def calibrate_mp4_file_name(mp4_file_name):
 
 def create_mp4_file_name():
     mp4_file_name = 'm3u8_To_Mp4_{}.mp4'.format(
-        datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
     return mp4_file_name

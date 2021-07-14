@@ -1,4 +1,4 @@
-.. image:: https://img.shields.io/pypi/v/0.1.1   :alt: PyPI
+.. image:: https://img.shields.io/pypi/v/m3u8-To-MP4?style=flat-square   :alt: PyPI
 
 
 m3u8-To-MP4
