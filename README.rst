@@ -10,14 +10,20 @@ QuickStart
 =============
 
 
-Install m3u8_To_MP4 by pip
+Install m3u8_To_MP4 via pip
 ---------------------------------------
 
-Configure ffmpeg_.
 
 .. code-block:: python
 
-   pip install m3u8_To_MP4
+   1. Preparation: configure ffmpeg.
+      e.g., Win10
+      - `Download <https://ffmpeg.org/download.html>`_ "release full" build. It will have the largest set of libraries with greater functionality.
+      - Extract the contents in the ZIP file to a folder of your choice.
+      - To add FFmpeg to Win10 path. (User variables -> Path -> New and add)
+      - Verify. Open the Command Prompt or PowerShell window, type ffmpeg, and press Enter.
+   2. Installation: m3u8_To_MP4
+      pip install m3u8_To_MP4
 
 
 Download a mp4 vidoe from a m3u8 uri
@@ -49,7 +55,7 @@ Features
 #. Treat ffmpeg as a system service to achieve cross-platform.
 #. Resume from interruption.
 #. Use system tmp folder.
-#. Concurrent requests based on the thread pool.
+#. Concurrent requests based on the thread pool and coroutine mechanism.
 #. The retry strategy is carried out collectively after the whole cycle is repeated, avoiding the problem of short retry interval.
 
 .. _ffmpeg: http://www.ffmpeg.org/download.html
