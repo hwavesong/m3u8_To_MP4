@@ -33,9 +33,9 @@ To download a m3u8 video into a mp4 file, use the `download` functions:
 
 .. code-block:: python
 
-    import m3u8_to_mp4
+    import m3u8_To_MP4 as mpp
 
-    m3u8_to_mp4.download('http://videoserver.com/playlist.m3u8')
+    mpp.download('http://videoserver.com/playlist.m3u8')
 
 
 
@@ -43,9 +43,30 @@ Resume the transfer from the point of interruption, use the `tmpdir` arguement:
 
 .. code-block:: python
 
-    import m3u8_to_mp4
+    import m3u8_To_MP4 as mpp
 
-    m3u8_to_mp4.download('http://videoserver.com/playlist.m3u8',tmpdir='/tmp/m3u8_xx')
+    mpp.download('http://videoserver.com/playlist.m3u8',tmpdir='/tmp/m3u8_xx')
+
+
+
+Parameters to the .download() method : 
+---------------------------------------------
+
+1. Retry URL : max_retry_times=3, 
+2. Specify the MP4 Directory : mp4_file_dir='./', 
+3. Specify the MP4 file name : mp4_file_name='m3u8_To_Mp4.mp4'
+
+Example : 
+
+.. code-block:: python
+
+    import m3u8_To_MP4 as mpp
+
+    mpp.download('http://videoserver.com/playlist.m3u8',tmpdir='/tmp/m3u8_xx', max_retry_times=3, max_num_workers=100,
+             mp4_file_dir='./', mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None)
+
+
+
 
 
 
