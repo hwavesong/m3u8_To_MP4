@@ -8,36 +8,41 @@ Basic usage:
 
 import m3u8_to_mp4
 m3u8_to_mp4.download("https://xxx.com/xxx/index.m3u8")
-    
+
+
 """
+
+# verify ffmpeg
 import subprocess
 
 test_has_ffmpeg_cmd = "ffmpeg -version"
 
-proc = subprocess.Popen(test_has_ffmpeg_cmd, shell=True,
-                        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+proc = subprocess.Popen(test_has_ffmpeg_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 outs, errs = proc.communicate()
 output_text = outs.decode('utf8')
 
-if 'version' not in output_text:
-    raise Exception('NOT FOUND FFMPEG!')
-
 import logging
+from m3u8_To_MP4.helpers import printer_helper
 
-logging.basicConfig(format='%(asctime)s | %(levelname)s | %(message)s',
-                    level=logging.INFO)
+printer_helper.config_logging()
 
-import m3u8_To_MP4.processor
-from m3u8_To_MP4.processor import Crawler
+if 'version' not in output_text:
+    logging.warning('NOT FOUND FFMPEG!')
+    logging.info('Compressing into tar.bz2 is only supported')
+
+# define API
+import m3u8_To_MP4.async_processor
+from m3u8_To_MP4.async_processor import Crawler as AsyncCrawler
+from m3u8_To_MP4.sync_processor import Crawler as SyncCrawler
 
 __all__ = (
-    "Crawler",
+    "SyncCrawler",
+    "AsyncCrawler",
     "download"
 )
 
 
-def download(m3u8_uri, max_retry_times=3, max_num_workers=100,
-             mp4_file_dir='./', mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
+def download(m3u8_uri, max_retry_times=3, num_concurrent=50, mp4_file_dir=None, mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
     '''
     Download mp4 video from given m3u uri.
 
@@ -48,7 +53,6 @@ def download(m3u8_uri, max_retry_times=3, max_num_workers=100,
     :param mp4_file_name: a mp4 file name with suffix ".mp4"
     :return:
     '''
-    with m3u8_To_MP4.processor.Crawler(m3u8_uri, max_retry_times,
-                                       max_num_workers, mp4_file_dir,
-                                       mp4_file_name, tmpdir) as crawler:
-        crawler.fetch_mp4_by_m3u8_uri()
+
+    with m3u8_To_MP4.async_processor.Crawler(m3u8_uri, max_retry_times, num_concurrent, mp4_file_dir, mp4_file_name, tmpdir) as crawler:
+        crawler.fetch_mp4_by_m3u8_uri(True)
