@@ -11,8 +11,7 @@ def get_headers():
     return headers
 
 
-def request_for(url, max_try_times=1, headers=None, data=None, timeout=30,
-                proxy_ip=None, verify=False):
+def request_for(url, max_try_times=1, headers=None, data=None, timeout=30, proxy_ip=None, verify=False):
     response_code = -1
     response_content = None
 
@@ -21,11 +20,9 @@ def request_for(url, max_try_times=1, headers=None, data=None, timeout=30,
             headers = get_headers()
 
         try:
-            request = urllib.request.Request(url=url, data=data,
-                                             headers=headers)
+            request = urllib.request.Request(url=url, data=data, headers=headers)
 
-            with urllib.request.urlopen(url=request,
-                                        timeout=timeout) as response:
+            with urllib.request.urlopen(url=request, timeout=timeout) as response:
                 response_code = response.getcode()
                 response_content = response.read()
 
