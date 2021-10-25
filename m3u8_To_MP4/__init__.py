@@ -63,6 +63,7 @@ def async_download(m3u8_uri, max_retry_times=3, num_concurrent=50, mp4_file_dir=
 def multithread_download(m3u8_uri, max_retry_times=3, max_num_workers=100, mp4_file_dir='./', mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
     '''
     Download mp4 video from given m3u uri.
+
     :param m3u8_uri: m3u8 uri
     :param max_retry_times: max retry times
     :param max_num_workers: number of download threads
@@ -78,6 +79,7 @@ import warnings
 def download(m3u8_uri, max_retry_times=3, max_num_workers=100, mp4_file_dir='./', mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
     '''
     Download mp4 video from given m3u uri.
+    
     :param m3u8_uri: m3u8 uri
     :param max_retry_times: max retry times
     :param max_num_workers: number of download threads
