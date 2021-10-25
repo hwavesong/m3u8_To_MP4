@@ -16,6 +16,7 @@ from m3u8_To_MP4.helpers import path_helper
 from m3u8_To_MP4.helpers import printer_helper
 from m3u8_To_MP4.networks.synchronous.sync_http_requester import request_for
 
+printer_helper.config_logging()
 
 def download_segment(segment_url):
     response_code, response_content = request_for(segment_url)
