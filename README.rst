@@ -23,7 +23,6 @@ Install m3u8_To_MP4 via pip
 
 2. Installation: m3u8_To_MP4
 
-
     .. code-block:: python
 
        pip install m3u8_To_MP4
@@ -63,5 +62,10 @@ Features
 #. Concurrent requests based on the thread pool.
 #. Concurrent requests based on efficient coroutines (v0.1.3 new features).
 #. The retry strategy is carried out collectively after the whole cycle is repeated, avoiding the problem of short retry interval.
+
+
+TODO
+=============
+#. Align asynchronous implementation with multithreads.
 
 .. _ffmpeg: http://www.ffmpeg.org/download.html
