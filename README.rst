@@ -1,7 +1,7 @@
 .. image:: https://img.shields.io/pypi/v/m3u8-To-MP4?style=flat-square   :alt: PyPI
 
 
-m3u8-To-MP4
+M3u8-To-MP4
 ============
 
 Python downloader for saving m3u8 video to local MP4 file.
@@ -32,29 +32,34 @@ Install m3u8_To_MP4 via pip
 Download a mp4 vidoe from a m3u8 uri
 ---------------------------------------
 
-To download a m3u8 video into a mp4 file, use the `download` functions:
+There are two options to download a m3u8 video into a mp4 file: async and multi-threads.
 
+Asynchronous downloader (recommend)
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 .. code-block:: python
 
    import m3u8_to_mp4
 
    if __name__ == '__main__':
-   
-       m3u8_to_mp4.download('http://videoserver.com/playlist.m3u8')
+       m3u8_to_mp4.async_download('http://videoserver.com/playlist.m3u8')
 
 
 
-Resume the transfer from the point of interruption, use the `tmpdir` arguement:
-
+Multi-thread downloader
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 .. code-block:: python
 
    import m3u8_to_mp4
 
    if __name__ == '__main__':
+       m3u8_to_mp4.multithread_download('http://videoserver.com/playlist.m3u8')
+       # For compatibility, i reserve this api, but i do not recommend to you again.
+       # m3u8_to_mp4.download('http://videoserver.com/playlist.m3u8')
 
-       m3u8_to_mp4.download('http://videoserver.com/playlist.m3u8',tmpdir='/tmp/m3u8_xx')
 
-
+Resuming
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+If you use default tmp dir, resuming the transfer from the point of interruption will be executed automatically (based on crc32 hashing).
 
 
 Features
