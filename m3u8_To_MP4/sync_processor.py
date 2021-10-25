@@ -51,7 +51,7 @@ class Crawler(object):
         self._legalize_valid_mp4_file_path()
 
         print('\nsummary:')
-        print('m3u8_uri: {};\nmax_retry_times: {};\nmax_num_workers: {};\ntmp_dir: {};\nmp4_file_path: {}\n'.format(self.m3u8_uri, self.max_retry_times, self.max_num_workers, self.tmpdir, self.mp4_file_path))
+        print('m3u8_uri: {};\nmax_retry_times: {};\nmax_num_workers: {};\ntmp_dir: {};\nmp4_file_path: {};\n'.format(self.m3u8_uri, self.max_retry_times, self.max_num_workers, self.tmpdir, self.mp4_file_path))
 
         return self
 

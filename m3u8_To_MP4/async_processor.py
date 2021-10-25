@@ -8,8 +8,6 @@ import tarfile
 import tempfile
 import time
 import zlib
-from multiprocessing import JoinableQueue
-from multiprocessing import Process
 
 import m3u8
 
@@ -50,7 +48,7 @@ class Crawler(object):
         self._imitate_tar_file_path()
 
         print('\nsummary')
-        print('m3u8_uri: {};\nmax_retry_times: {};\ntmp_dir: {};\nmp4_file_path: {}\n'.format(self.m3u8_uri, self.max_retry_times, self.tmpdir, self.mp4_file_path))
+        print('m3u8_uri: {};\nmax_retry_times: {};\ntmp_dir: {};\nmp4_file_path: {};\n'.format(self.m3u8_uri, self.max_retry_times, self.tmpdir, self.mp4_file_path))
 
         return self
 
@@ -214,21 +212,7 @@ class Crawler(object):
         return key_segments_pairs
 
     def _fetch_segments_to_local_tmpdir(self, key_segments_pairs):
-        num_ts_segments = len(key_segments_pairs)
-        progress_bar = printer_helper.ProcessBar(self.num_fetched_ts_segments, num_ts_segments + self.num_fetched_ts_segments, 'segment set', 'downloading...', 'downloaded segments successfully!')
-
-        # schedule tasks
-        ts_queue = JoinableQueue()
-
-        ts_producer = Process(target=async_producer_consumer.producer_process, args=(key_segments_pairs, self.available_addr_info_pool, ts_queue, self.num_concurrent))
-        ts_consumer = Process(target=async_producer_consumer.consumer_process, args=(ts_queue, self.tmpdir, progress_bar))
-
-        ts_consumer.daemon = True
-
-        ts_producer.start()
-        ts_consumer.start()
-
-        ts_producer.join()
+        async_producer_consumer.factory_pipeline(self.num_fetched_ts_segments, key_segments_pairs, self.available_addr_info_pool, self.num_concurrent, self.tmpdir)
 
     def _construct_segment_path_recipe(self, key_segment_pairs):
         with open(self.segment_path_recipe, 'w', encoding='utf8') as fw:
@@ -284,3 +268,4 @@ class Crawler(object):
 
             task_end_time = time.time()
             printer_helper.display_speed(task_start_time, fetch_end_time, task_end_time, self.tar_file_path)
+
