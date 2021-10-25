@@ -48,7 +48,7 @@ def download(m3u8_uri, max_retry_times=3, num_concurrent=50, mp4_file_dir=None, 
 
     :param m3u8_uri: m3u8 uri
     :param max_retry_times: max retry times
-    :param max_num_workers: number of download threads
+    :param max_concurrent: concurrency
     :param mp4_file_dir: folder path where mp4 file is stored
     :param mp4_file_name: a mp4 file name with suffix ".mp4"
     :return:
