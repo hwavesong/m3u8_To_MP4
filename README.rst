@@ -66,6 +66,9 @@ Features
 
 TODO
 =============
-#. Align asynchronous implementation with multithreads.
+* Align asynchronous implementation with multi-threads.
+* Errors: application data after close notify.
+* Extract independent asynchronous http package.
+* Support IPv6.
 
 .. _ffmpeg: http://www.ffmpeg.org/download.html
