@@ -37,7 +37,9 @@ from m3u8_To_MP4.sync_processor import Crawler as SyncCrawler
 
 __all__ = (
     "SyncCrawler",
+    "async_download",
     "AsyncCrawler",
+    "multithread_download",
     "download"
 )
 
