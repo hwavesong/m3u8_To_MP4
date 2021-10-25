@@ -8,10 +8,12 @@ import platform
 import urllib.parse
 import urllib.parse
 from collections import Counter
+from multiprocessing import JoinableQueue, Process,Manager
 
 from Crypto.Cipher import AES
 
 from m3u8_To_MP4.helpers import path_helper
+from m3u8_To_MP4.helpers import printer_helper
 from m3u8_To_MP4.networks import http_base
 from m3u8_To_MP4.networks.asynchronous import async_http
 
@@ -98,3 +100,21 @@ def consumer_process(ts_queue, tmpdir, progress_bar):
         ts_queue.task_done()
 
         progress_bar.update()
+
+
+def factory_pipeline(num_fetched_ts_segments, key_segments_pairs, available_addr_info_pool, num_concurrent, tmpdir):
+    num_ts_segments = len(key_segments_pairs)
+    progress_bar = printer_helper.ProcessBar(num_fetched_ts_segments, num_ts_segments + num_fetched_ts_segments, 'segment set', 'downloading...', 'downloaded segments successfully!')
+
+    # schedule tasks
+    ts_queue = JoinableQueue()
+
+    ts_producer = Process(target=producer_process, args=(key_segments_pairs, available_addr_info_pool, ts_queue, num_concurrent))
+    ts_consumer = Process(target=consumer_process, args=(ts_queue, tmpdir, progress_bar))
+
+    ts_consumer.daemon = True
+
+    ts_producer.start()
+    ts_consumer.start()
+
+    ts_producer.join()
