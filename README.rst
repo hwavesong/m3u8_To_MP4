@@ -38,7 +38,9 @@ To download a m3u8 video into a mp4 file, use the `download` functions:
 
    import m3u8_to_mp4
 
-   m3u8_to_mp4.download('http://videoserver.com/playlist.m3u8')
+   if __name__ == '__main__':
+   
+       m3u8_to_mp4.download('http://videoserver.com/playlist.m3u8')
 
 
 
@@ -48,7 +50,9 @@ Resume the transfer from the point of interruption, use the `tmpdir` arguement:
 
    import m3u8_to_mp4
 
-   m3u8_to_mp4.download('http://videoserver.com/playlist.m3u8',tmpdir='/tmp/m3u8_xx')
+   if __name__ == '__main__':
+
+       m3u8_to_mp4.download('http://videoserver.com/playlist.m3u8',tmpdir='/tmp/m3u8_xx')
 
 
 
