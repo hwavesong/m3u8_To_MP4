@@ -86,14 +86,13 @@ def consumer_process(ts_queue, tmpdir, progress_bar):
     while True:
         encrypted_key, encrypted_content, file_name = ts_queue.get()
 
-        file_path = os.path.join(tmpdir, file_name)
-
         if encrypted_key is not None:
             crypt_ls = {"AES-128": AES}
             crypt_obj = crypt_ls[encrypted_key.method]
             cryptor = crypt_obj.new(encrypted_key.value, crypt_obj.MODE_CBC)
             encrypted_content = cryptor.decrypt(encrypted_content)
 
+        file_path = os.path.join(tmpdir, file_name)
         with open(file_path, 'wb') as fin:
             fin.write(encrypted_content)
 
