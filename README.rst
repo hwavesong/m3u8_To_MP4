@@ -75,6 +75,7 @@ Features
 
 TODO
 =============
+* Catch exceptions during decryption.
 * Align asynchronous implementation with multi-threads.
 * Errors: application data after close notify.
 * Extract independent asynchronous http package.
