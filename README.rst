@@ -80,5 +80,6 @@ TODO
 * Errors: application data after close notify.
 * Extract independent asynchronous http package.
 * Support IPv6.
+* Compare ffmpeg/avconv/mencoder/moviepy.
 
 .. _ffmpeg: http://www.ffmpeg.org/download.html
