@@ -75,11 +75,12 @@ Features
 
 TODO
 =============
-* Catch exceptions during decryption.
-* Align asynchronous implementation with multi-threads.
+* Catch exceptions during decryption. (Done)
+* Align asynchronous implementation with multi-threads. (Done)
 * Errors: application data after close notify.
 * Extract independent asynchronous http package.
 * Support IPv6.
 * Compare ffmpeg/avconv/mencoder/moviepy.
+
 
 .. _ffmpeg: http://www.ffmpeg.org/download.html
