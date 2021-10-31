@@ -31,14 +31,14 @@ if 'version' not in output_text:
     logging.info('Compressing into tar.bz2 is only supported')
 
 # define API
-import m3u8_To_MP4.async_processor
-from m3u8_To_MP4.async_processor import Crawler as AsyncCrawler
-from m3u8_To_MP4.sync_processor import Crawler as SyncCrawler
+import m3u8_To_MP4.multithreads_processor
+from m3u8_To_MP4.v2_async_processor import AsynchronousCrawler
+from m3u8_To_MP4.v2_multithreads_processor import MultiThreadsCrawler
 
 __all__ = (
-    "SyncCrawler",
+    "MultiThreadsCrawler",
+    "AsynchronousCrawler",
     "async_download",
-    "AsyncCrawler",
     "multithread_download",
     "download"
 )
@@ -56,7 +56,7 @@ def async_download(m3u8_uri, max_retry_times=3, num_concurrent=50, mp4_file_dir=
     :return:
     '''
 
-    with m3u8_To_MP4.async_processor.Crawler(m3u8_uri, max_retry_times, num_concurrent, mp4_file_dir, mp4_file_name, tmpdir) as crawler:
+    with m3u8_To_MP4.v2_async_processor.AsynchronousCrawler(m3u8_uri, max_retry_times, num_concurrent, mp4_file_dir, mp4_file_name, tmpdir) as crawler:
         crawler.fetch_mp4_by_m3u8_uri(True)
 
 
@@ -71,15 +71,17 @@ def multithread_download(m3u8_uri, max_retry_times=3, max_num_workers=100, mp4_f
     :param mp4_file_name: a mp4 file name with suffix ".mp4"
     :return:
     '''
-    with m3u8_To_MP4.sync_processor.Crawler(m3u8_uri, max_retry_times, max_num_workers, mp4_file_dir, mp4_file_name, tmpdir) as crawler:
-        crawler.fetch_mp4_by_m3u8_uri()
+    with m3u8_To_MP4.v2_multithreads_processor.MultiThreadsCrawler(m3u8_uri, max_retry_times, max_num_workers, mp4_file_dir, mp4_file_name, tmpdir) as crawler:
+        crawler.fetch_mp4_by_m3u8_uri(True)
+
 
 import warnings
+
 
 def download(m3u8_uri, max_retry_times=3, max_num_workers=100, mp4_file_dir='./', mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
     '''
     Download mp4 video from given m3u uri.
-    
+
     :param m3u8_uri: m3u8 uri
     :param max_retry_times: max retry times
     :param max_num_workers: number of download threads
@@ -87,6 +89,7 @@ def download(m3u8_uri, max_retry_times=3, max_num_workers=100, mp4_file_dir='./'
     :param mp4_file_name: a mp4 file name with suffix ".mp4"
     :return:
     '''
-    warnings.warn('download function is deprecated, and please use multithread_download.',DeprecationWarning)
+    warnings.warn('download function is deprecated, and please use multithread_download.', DeprecationWarning)
 
-    multithread_download(m3u8_uri, max_retry_times, max_num_workers, mp4_file_dir, mp4_file_name, tmpdir)
+    with m3u8_To_MP4.multithreads_processor.Crawler(m3u8_uri, max_retry_times, max_num_workers, mp4_file_dir, mp4_file_name, tmpdir) as crawler:
+        crawler.fetch_mp4_by_m3u8_uri()
