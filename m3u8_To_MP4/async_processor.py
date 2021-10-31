@@ -167,7 +167,7 @@ class Crawler(object):
                 _encrypted_key = EncryptedKey(method=key.method, value=encryped_value, iv=key.iv)
 
                 key_segments = m3u8_obj.segments.by_key(key)
-                segments_by_key = [(_encrypted_key, segment.absolute_uri) for segment in key_segments if not self._is_fetched(segment.absolute_uri)]
+                segments_by_key = [(_encrypted_key, segment.absolute_uri) for segment in key_segments]
 
                 key_segments_pairs.extend(segments_by_key)
 
@@ -180,14 +180,6 @@ class Crawler(object):
             key_segments_pairs.extend(segments_by_key)
 
         return key_segments_pairs
-
-    def _is_fetched(self, segment_uri):
-        file_name = path_helper.resolve_file_name_by_uri(segment_uri)
-
-        if file_name in self.fetched_file_names:
-            return True
-
-        return False
 
     def _is_ads(self, segment_uri):
         if segment_uri.startswith(self.longest_common_subsequence):
@@ -203,6 +195,14 @@ class Crawler(object):
         key_segments_pairs = [(_encrypted_key, segment_uri) for _encrypted_key, segment_uri in key_segments_pairs if not self._is_ads(segment_uri)]
 
         return key_segments_pairs
+
+    def _is_fetched(self, segment_uri):
+        file_name = path_helper.resolve_file_name_by_uri(segment_uri)
+
+        if file_name in self.fetched_file_names:
+            return True
+
+        return False
 
     def _filter_done_ts(self, key_segments_pairs):
         num_ts_segments = len(key_segments_pairs)
@@ -268,4 +268,3 @@ class Crawler(object):
 
             task_end_time = time.time()
             printer_helper.display_speed(task_start_time, fetch_end_time, task_end_time, self.tar_file_path)
-
