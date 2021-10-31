@@ -8,7 +8,7 @@ import platform
 import urllib.parse
 import urllib.parse
 from collections import Counter
-from multiprocessing import JoinableQueue, Process,Manager
+from multiprocessing import JoinableQueue, Process
 
 from Crypto.Cipher import AES
 
@@ -89,7 +89,7 @@ def consumer_process(ts_queue, tmpdir, progress_bar):
         if encrypted_key is not None:
             crypt_ls = {"AES-128": AES}
             crypt_obj = crypt_ls[encrypted_key.method]
-            cryptor = crypt_obj.new(encrypted_key.value, crypt_obj.MODE_CBC)
+            cryptor = crypt_obj.new(encrypted_key.value.encode(), crypt_obj.MODE_CBC)
             encrypted_content = cryptor.decrypt(encrypted_content)
 
         file_path = os.path.join(tmpdir, file_name)
