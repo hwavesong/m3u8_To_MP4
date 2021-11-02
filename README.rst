@@ -81,6 +81,7 @@ TODO
 * Extract independent asynchronous http package.
 * Support IPv6.
 * Compare ffmpeg/avconv/mencoder/moviepy.
+* Support bilibili etc.
 
 
 .. _ffmpeg: http://www.ffmpeg.org/download.html
