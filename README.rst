@@ -82,6 +82,7 @@ TODO
 * Support IPv6.
 * Compare ffmpeg/avconv/mencoder/moviepy.
 * Support bilibili etc.
+* Download videos from existing m3u8.
 
 
 .. _ffmpeg: http://www.ffmpeg.org/download.html
