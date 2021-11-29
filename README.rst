@@ -29,7 +29,7 @@ Install m3u8_To_MP4 via pip
 
 
 
-Download a mp4 vidoe from a m3u8 uri
+Download a mp4 video
 ---------------------------------------
 
 There are two options to download a m3u8 video into a mp4 file: async and multi-threads.
