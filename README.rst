@@ -34,32 +34,53 @@ Download a mp4 vidoe from a m3u8 uri
 
 There are two options to download a m3u8 video into a mp4 file: async and multi-threads.
 
-Asynchronous downloader (recommend)
+Multi-thread downloader (recommend)
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 .. code-block:: python
 
-   import m3u8_to_mp4
-
    if __name__ == '__main__':
-       m3u8_to_mp4.async_download('http://videoserver.com/playlist.m3u8')
-
-
-
-Multi-thread downloader
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-.. code-block:: python
-
-   import m3u8_to_mp4
-
-   if __name__ == '__main__':
+       # 1. Download videos from uri.
        m3u8_to_mp4.multithread_download('http://videoserver.com/playlist.m3u8')
+
+       # 2. Download videos from existing m3u8 files.
+       m3u8_to_mp4.multithread_file_download('http://videoserver.com/playlist.m3u8',m3u8_file_path)
+
        # For compatibility, i reserve this api, but i do not recommend to you again.
        # m3u8_to_mp4.download('http://videoserver.com/playlist.m3u8')
+
+
+Asynchronous downloader
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+.. code-block:: python
+
+   import m3u8_to_mp4
+
+   if __name__ == '__main__':
+       # 1. Download mp4 from uri.
+       m3u8_to_mp4.async_download('http://videoserver.com/playlist.m3u8')
+
+       # 2. Download mp4 from existing m3u8 files.
+       m3u8_to_mp4.async_file_download('http://videoserver.com/playlist.m3u8',m3u8_file_path)
+
 
 
 Resuming
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 If you use default tmp dir, resuming the transfer from the point of interruption will be executed automatically (based on crc32 hashing).
+
+Custom http request header
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+In some cases, customized http request headers helps to match some website requirements. For the available APIs, you can pass in a dictionary type header, which overrides the settings in the program. A simple example is:
+
+.. code-block:: python
+
+   import m3u8_to_mp4
+
+   if __name__ == '__main__':
+       customized_http_header=dict()
+       customized_http_header['Referer']='https://videoserver.com/'
+
+       m3u8_to_mp4.multithread_download('http://videoserver.com/playlist.m3u8',customized_http_header=customized_http_header)
 
 
 Features
@@ -71,18 +92,18 @@ Features
 #. Concurrent requests based on the thread pool.
 #. Concurrent requests based on efficient coroutines (v0.1.3 new features).
 #. The retry strategy is carried out collectively after the whole cycle is repeated, avoiding the problem of short retry interval.
+#. Download videos from existing m3u8 files.
+#. Anti-crawler parameters based on customized request headers.
+#. Clean codes based on inheritance.
 
 
 TODO
 =============
-* Catch exceptions during decryption. (Done)
-* Align asynchronous implementation with multi-threads. (Done)
-* Errors: application data after close notify.
+* Errors: application data after close notify (related to the Python interpreter).
 * Extract independent asynchronous http package.
 * Support IPv6.
 * Compare ffmpeg/avconv/mencoder/moviepy.
 * Support bilibili etc.
-* Download videos from existing m3u8.
 
 
 .. _ffmpeg: http://www.ffmpeg.org/download.html
