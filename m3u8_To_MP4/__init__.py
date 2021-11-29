@@ -32,19 +32,28 @@ if 'version' not in output_text:
 
 # define API
 import m3u8_To_MP4.multithreads_processor
-from m3u8_To_MP4.v2_async_processor import AsynchronousCrawler
-from m3u8_To_MP4.v2_multithreads_processor import MultiThreadsCrawler
+from m3u8_To_MP4.v2_async_processor import AsynchronousFileCrawler
+from m3u8_To_MP4.v2_async_processor import AsynchronousUriCrawler
+from m3u8_To_MP4.v2_multithreads_processor import MultiThreadsFileCrawler
+from m3u8_To_MP4.v2_multithreads_processor import MultiThreadsUriCrawler
 
 __all__ = (
-    "MultiThreadsCrawler",
-    "AsynchronousCrawler",
+    "MultiThreadsFileCrawler",
+    "MultiThreadsUriCrawler",
+    "AsynchronousFileCrawler",
+    "AsynchronousUriCrawler",
     "async_download",
+    "async_file_download",
+    "async_uri_download",
     "multithread_download",
+    "multithread_file_download",
+    "multithread_uri_download",
     "download"
 )
 
 
-def async_download(m3u8_uri, max_retry_times=3, num_concurrent=50, mp4_file_dir=None, mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
+# ================ Async ===================
+def async_download(m3u8_uri, customized_http_header=None, max_retry_times=3, num_concurrent=50, mp4_file_dir=None, mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
     '''
     Download mp4 video from given m3u uri.
 
@@ -56,11 +65,22 @@ def async_download(m3u8_uri, max_retry_times=3, num_concurrent=50, mp4_file_dir=
     :return:
     '''
 
-    with m3u8_To_MP4.v2_async_processor.AsynchronousCrawler(m3u8_uri, max_retry_times, num_concurrent, mp4_file_dir, mp4_file_name, tmpdir) as crawler:
+    with m3u8_To_MP4.v2_async_processor.AsynchronousUriCrawler(m3u8_uri, customized_http_header, max_retry_times, num_concurrent, mp4_file_dir, mp4_file_name, tmpdir) as crawler:
         crawler.fetch_mp4_by_m3u8_uri(True)
 
 
-def multithread_download(m3u8_uri, max_retry_times=3, max_num_workers=100, mp4_file_dir='./', mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
+def async_uri_download(m3u8_uri, customized_http_header=None, max_retry_times=3, num_concurrent=50, mp4_file_dir=None, mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
+    with m3u8_To_MP4.v2_async_processor.AsynchronousUriCrawler(m3u8_uri, customized_http_header, max_retry_times, num_concurrent, mp4_file_dir, mp4_file_name, tmpdir) as crawler:
+        crawler.fetch_mp4_by_m3u8_uri(True)
+
+
+def async_file_download(m3u8_uri, m3u8_file_path, customized_http_header=None, max_retry_times=3, num_concurrent=50, mp4_file_dir=None, mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
+    with m3u8_To_MP4.v2_async_processor.AsynchronousFileCrawler(m3u8_uri, m3u8_file_path, customized_http_header, max_retry_times, num_concurrent, mp4_file_dir, mp4_file_name, tmpdir) as crawler:
+        crawler.fetch_mp4_by_m3u8_uri(True)
+
+
+# ================ MultiThread ===================
+def multithread_download(m3u8_uri, customized_http_header=None, max_retry_times=3, max_num_workers=100, mp4_file_dir='./', mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
     '''
     Download mp4 video from given m3u uri.
 
@@ -71,10 +91,21 @@ def multithread_download(m3u8_uri, max_retry_times=3, max_num_workers=100, mp4_f
     :param mp4_file_name: a mp4 file name with suffix ".mp4"
     :return:
     '''
-    with m3u8_To_MP4.v2_multithreads_processor.MultiThreadsCrawler(m3u8_uri, max_retry_times, max_num_workers, mp4_file_dir, mp4_file_name, tmpdir) as crawler:
+    with m3u8_To_MP4.v2_multithreads_processor.MultiThreadsUriCrawler(m3u8_uri, customized_http_header, max_retry_times, max_num_workers, mp4_file_dir, mp4_file_name, tmpdir) as crawler:
         crawler.fetch_mp4_by_m3u8_uri(True)
 
 
+def multithread_uri_download(m3u8_uri, customied_http_header=None, max_retry_times=3, max_num_workers=100, mp4_file_dir='./', mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
+    with m3u8_To_MP4.v2_multithreads_processor.MultiThreadsUriCrawler(m3u8_uri, customied_http_header, max_retry_times, max_num_workers, mp4_file_dir, mp4_file_name, tmpdir) as crawler:
+        crawler.fetch_mp4_by_m3u8_uri(True)
+
+
+def multithread_file_download(m3u8_uri, m3u8_file_path, customized_http_header=None, max_retry_times=3, max_num_workers=100, mp4_file_dir='./', mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
+    with m3u8_To_MP4.v2_multithreads_processor.MultiThreadsFileCrawler(m3u8_uri, m3u8_file_path, customized_http_header, max_retry_times, max_num_workers, mp4_file_dir, mp4_file_name, tmpdir) as crawler:
+        crawler.fetch_mp4_by_m3u8_uri(True)
+
+
+# ================ Deprecated Function ===================
 import warnings
 
 

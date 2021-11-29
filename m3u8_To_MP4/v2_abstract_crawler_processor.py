@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import collections
 import logging
 import os
 import shutil
@@ -9,21 +8,17 @@ import tempfile
 import time
 import zlib
 
-import m3u8
-
 from m3u8_To_MP4.helpers import path_helper
 from m3u8_To_MP4.helpers import printer_helper
 from m3u8_To_MP4.networks.synchronous import sync_DNS
-from m3u8_To_MP4.networks.synchronous import sync_http
 
 printer_helper.config_logging()
 
-EncryptedKey = collections.namedtuple(typename='EncryptedKey', field_names=['method', 'value', 'iv'])
-
 
 class AbstractCrawler(object):
-    def __init__(self, m3u8_uri, max_retry_times=3, num_concurrent=50, mp4_file_dir=None, mp4_file_name='m3u8-To-Mp4.mp4', tmpdir=None):
+    def __init__(self, m3u8_uri, customized_http_header=None, max_retry_times=3, num_concurrent=50, mp4_file_dir=None, mp4_file_name='m3u8-To-Mp4.mp4', tmpdir=None):
         self.m3u8_uri = m3u8_uri
+        self.customized_http_header = customized_http_header
 
         self.max_retry_times = max_retry_times
         self.num_concurrent = num_concurrent
@@ -114,78 +109,15 @@ class AbstractCrawler(object):
         for addr_info in self.available_addr_info_pool:
             logging.info('{}:{}'.format(addr_info.host, addr_info.port))
 
-    def _request_m3u8_obj_from_url(self):
-        try:
-            response_code, m3u8_bytes = sync_http.retrieve_resource_from_url(self.best_addr_info, self.m3u8_uri)
-            if response_code != 200:
-                raise Exception('DOWNLOAD KEY FAILED, URI IS {}'.format(self.m3u8_uri))
-
-            m3u8_str = m3u8_bytes.decode()
-            m3u8_obj = m3u8.loads(content=m3u8_str, uri=self.m3u8_uri)
-        except Exception as exc:
-            logging.exception('Failed to load m3u8 file,reason is {}'.format(exc))
-            raise Exception('FAILED TO LOAD M3U8 FILE!')
-
-        return m3u8_obj
-
-    def _get_m3u8_obj_with_best_bandwitdth(self):
-        m3u8_obj = self._request_m3u8_obj_from_url()
-
-        if m3u8_obj.is_variant:
-
-            best_bandwidth = -1
-            best_bandwidth_m3u8_uri = None
-
-            for playlist in m3u8_obj.playlists:
-                if playlist.stream_info.bandwidth > best_bandwidth:
-                    best_bandwidth = playlist.stream_info.bandwidth
-                    best_bandwidth_m3u8_uri = playlist.absolute_uri
-
-            logging.info("Choose the best bandwidth, which is {}".format(best_bandwidth))
-            logging.info("Best m3u8 uri is {}".format(best_bandwidth_m3u8_uri))
-
-            self.m3u8_uri = best_bandwidth_m3u8_uri
-
-            m3u8_obj = self._request_m3u8_obj_from_url()
-
-        return m3u8_obj
-
-    def _construct_key_segment_pairs_by_m3u8(self, m3u8_obj):
-        key_segments_pairs = list()
-        for key in m3u8_obj.keys:
-            if key:
-                if key.method.lower() == 'none':
-                    continue
-
-                response_code, encryped_value = sync_http.retrieve_resource_from_url(self.best_addr_info, key.absolute_uri)
-
-                if response_code != 200:
-                    raise Exception('DOWNLOAD KEY FAILED, URI IS {}'.format(key.absolute_uri))
-
-                encryped_value = encryped_value.decode()
-                _encrypted_key = EncryptedKey(method=key.method, value=encryped_value, iv=key.iv)
-
-                key_segments = m3u8_obj.segments.by_key(key)
-                segments_by_key = [(_encrypted_key, segment.absolute_uri) for segment in key_segments]
-
-                key_segments_pairs.extend(segments_by_key)
-
-        if len(key_segments_pairs) == 0:
-            _encrypted_key = None
-
-            key_segments = m3u8_obj.segments
-            segments_by_key = [(_encrypted_key, segment.absolute_uri) for segment in key_segments]
-
-            key_segments_pairs.extend(segments_by_key)
-
-        return key_segments_pairs
+    def _create_tasks(self):
+        raise NotImplementedError
 
     def _is_ads(self, segment_uri):
         if segment_uri.startswith(self.longest_common_subsequence):
             return True
 
-        if not segment_uri.endswith('.ts'):
-            return True
+        # if not segment_uri.endswith('.ts'):
+        #     return True
 
         return False
 
@@ -243,9 +175,7 @@ class AbstractCrawler(object):
         self._resolve_DNS()
 
         # resolve ts segment uris
-        m3u8_obj = self._get_m3u8_obj_with_best_bandwitdth()
-
-        key_segments_pairs = self._construct_key_segment_pairs_by_m3u8(m3u8_obj)
+        key_segments_pairs = self._create_tasks()
 
         key_segments_pairs = self._filter_ads_ts(key_segments_pairs)
         self._construct_segment_path_recipe(key_segments_pairs)
