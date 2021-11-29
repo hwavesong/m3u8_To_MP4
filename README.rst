@@ -39,7 +39,7 @@ Multi-thread downloader (recommend)
 .. code-block:: python
 
    import m3u8_to_mp4
-   
+
    if __name__ == '__main__':
        # 1. Download videos from uri.
        m3u8_to_mp4.multithread_download('http://videoserver.com/playlist.m3u8')
@@ -72,7 +72,7 @@ If you use default tmp dir, resuming the transfer from the point of interruption
 
 Custom http request header
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-In some cases, customized http request headers helps to match some website requirements. For the available APIs, you can pass in a dictionary type header, which overrides the settings in the program. A simple example is:
+In some cases, customized http request headers help to match some website requirements. For the available APIs, you can pass in a dictionary type header, which overrides the settings in the program. A simple example is:
 
 .. code-block:: python
 
