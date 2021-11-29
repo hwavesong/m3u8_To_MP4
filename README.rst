@@ -38,6 +38,8 @@ Multi-thread downloader (recommend)
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 .. code-block:: python
 
+   import m3u8_to_mp4
+   
    if __name__ == '__main__':
        # 1. Download videos from uri.
        m3u8_to_mp4.multithread_download('http://videoserver.com/playlist.m3u8')
