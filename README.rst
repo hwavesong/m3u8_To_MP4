@@ -38,31 +38,31 @@ Multi-thread downloader (recommend)
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 .. code-block:: python
 
-   import m3u8_To_Mp4
+   import m3u8_To_MP4
 
    if __name__ == '__main__':
        # 1. Download videos from uri.
-       m3u8_To_Mp4.multithread_download('http://videoserver.com/playlist.m3u8')
+       m3u8_To_MP4.multithread_download('http://videoserver.com/playlist.m3u8')
 
        # 2. Download videos from existing m3u8 files.
-       m3u8_To_Mp4.multithread_file_download('http://videoserver.com/playlist.m3u8',m3u8_file_path)
+       m3u8_To_MP4.multithread_file_download('http://videoserver.com/playlist.m3u8',m3u8_file_path)
 
        # For compatibility, i reserve this api, but i do not recommend to you again.
-       # m3u8_To_Mp4.download('http://videoserver.com/playlist.m3u8')
+       # m3u8_To_MP4.download('http://videoserver.com/playlist.m3u8')
 
 
 Asynchronous downloader
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 .. code-block:: python
 
-   import m3u8_To_Mp4
+   import m3u8_To_MP4
 
    if __name__ == '__main__':
        # 1. Download mp4 from uri.
-       m3u8_To_Mp4.async_download('http://videoserver.com/playlist.m3u8')
+       m3u8_To_MP4.async_download('http://videoserver.com/playlist.m3u8')
 
        # 2. Download mp4 from existing m3u8 files.
-       m3u8_To_Mp4.async_file_download('http://videoserver.com/playlist.m3u8',m3u8_file_path)
+       m3u8_To_MP4.async_file_download('http://videoserver.com/playlist.m3u8',m3u8_file_path)
 
 
 
@@ -76,13 +76,13 @@ In some cases, customized http request headers help to match some website requir
 
 .. code-block:: python
 
-   import m3u8_To_Mp4
+   import m3u8_To_MP4
 
    if __name__ == '__main__':
        customized_http_header=dict()
        customized_http_header['Referer']='https://videoserver.com/'
 
-       m3u8_To_Mp4.multithread_download('http://videoserver.com/playlist.m3u8',customized_http_header=customized_http_header)
+       m3u8_To_MP4.multithread_download('http://videoserver.com/playlist.m3u8',customized_http_header=customized_http_header)
 
 
 Features
