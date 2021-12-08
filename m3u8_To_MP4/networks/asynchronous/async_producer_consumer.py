@@ -111,9 +111,10 @@ def factory_pipeline(num_fetched_ts_segments, key_segments_pairs, available_addr
     ts_producer = Process(target=producer_process, args=(key_segments_pairs, available_addr_info_pool, ts_queue, num_concurrent))
     ts_consumer = Process(target=consumer_process, args=(ts_queue, tmpdir, progress_bar))
 
-    ts_consumer.daemon = True
+    # ts_consumer.daemon = True
 
     ts_producer.start()
     ts_consumer.start()
 
     ts_producer.join()
+    ts_consumer.join()
