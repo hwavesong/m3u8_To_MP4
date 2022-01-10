@@ -83,6 +83,10 @@ class AbstractCrawler(object):
         self.fetched_file_names = full_ts_file_names
 
     def _legalize_mp4_file_path(self):
+        if not os.path.exists(self.mp4_file_dir):
+            self.mp4_file_dir = os.getcwd()
+            print('{} does not exists, current directory is set automatically.')
+
         if self.mp4_file_dir is None:
             self.mp4_file_dir = os.getcwd()
 
