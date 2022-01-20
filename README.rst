@@ -4,7 +4,7 @@
 M3u8-To-MP4
 ============
 
-Python downloader for saving m3u8 video to local MP4 file.
+Python downloader for saving m3u8 videos to local MP4 files.
 
 QuickStart
 =============
