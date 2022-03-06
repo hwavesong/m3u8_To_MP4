@@ -9,7 +9,7 @@ from m3u8_To_MP4.networks.http_base import AddressInfo
 def available_addr_infos_of_url(url):
     scheme, netloc, path, query, fragment = urllib.parse.urlsplit(url)
 
-    specific_port_pattern = re.compile(r'(:\d+)')
+    specific_port_pattern = re.compile(r':(\d+)')
     specific_ports = re.findall(specific_port_pattern, netloc)
 
     netloc = re.sub(specific_port_pattern, '', netloc)
