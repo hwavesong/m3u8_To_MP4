@@ -3,7 +3,9 @@ import collections
 import random
 import ssl
 
-AddressInfo = collections.namedtuple(typename='AddressInfo', field_names=['host', 'port', 'family', 'proto'])
+AddressInfo = collections.namedtuple(typename='AddressInfo',
+                                     field_names=['host', 'port', 'family',
+                                                  'proto'])
 
 
 def statement_of_http_get_resource(resource_path_at_server):

@@ -8,7 +8,8 @@ from m3u8_To_MP4.helpers import path_helper
 from m3u8_To_MP4.networks import http_base
 
 
-def http_get_header(domain_name, port, resource_path_at_server, is_keep_alive, customized_http_header):
+def http_get_header(domain_name, port, resource_path_at_server, is_keep_alive,
+                    customized_http_header):
     request_header = dict()
 
     # http_get_resource = http_base.statement_of_http_get_resource(resource_path_at_server)
@@ -28,9 +29,12 @@ def http_get_header(domain_name, port, resource_path_at_server, is_keep_alive, c
     return request_header
 
 
-def retrieve_resource_from_url(address_info, url, is_keep_alive=False, max_retry_times=5, timeout=30, customized_http_header=None):
+def retrieve_resource_from_url(address_info, url, is_keep_alive=False,
+                               max_retry_times=5, timeout=30,
+                               customized_http_header=None):
     port = address_info.port
-    scheme, domain_name_with_suffix, path, query, fragment = urllib.parse.urlsplit(url)
+    scheme, domain_name_with_suffix, path, query, fragment = urllib.parse.urlsplit(
+        url)
 
     resource_path = path_helper.updated_resource_path(path, query)
 
@@ -38,12 +42,14 @@ def retrieve_resource_from_url(address_info, url, is_keep_alive=False, max_retry
     response_content = None
 
     for num_retry in range(max_retry_times):
-        headers = http_get_header(domain_name_with_suffix, port, resource_path, is_keep_alive, customized_http_header)
+        headers = http_get_header(domain_name_with_suffix, port, resource_path,
+                                  is_keep_alive, customized_http_header)
 
         try:
             request = urllib.request.Request(url=url, headers=headers)
 
-            with urllib.request.urlopen(url=request, timeout=timeout) as response:
+            with urllib.request.urlopen(url=request,
+                                        timeout=timeout) as response:
                 response_code = response.getcode()
                 response_content = response.read()
 

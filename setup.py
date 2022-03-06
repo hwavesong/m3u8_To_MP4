@@ -8,7 +8,8 @@ if exists("README.rst"):
     with  open("README.rst") as file:
         long_description = file.read()
 
-install_reqs = [req for req in open(abspath(join(dirname(__file__), 'requirements.txt')))]
+install_reqs = [req for req in
+                open(abspath(join(dirname(__file__), 'requirements.txt')))]
 
 setup(
         name='m3u8-To-MP4',

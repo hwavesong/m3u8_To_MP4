@@ -15,12 +15,14 @@ def available_addr_infos_of_url(url):
     netloc = re.sub(specific_port_pattern, '', netloc)
 
     # todo:: support IPv6
-    addr_infos = socket.getaddrinfo(host=netloc, port=scheme, family=socket.AF_INET)
+    addr_infos = socket.getaddrinfo(host=netloc, port=scheme,
+                                    family=socket.AF_INET)
 
     available_addr_info_pool = list()
     for family, type, proto, canonname, sockaddr in addr_infos:
         port = specific_ports[0] if len(specific_ports) > 0 else sockaddr[1]
-        ai = AddressInfo(host=sockaddr[0], port=port, family=family, proto=proto)
+        ai = AddressInfo(host=sockaddr[0], port=port, family=family,
+                         proto=proto)
         available_addr_info_pool.append(ai)
 
     return available_addr_info_pool

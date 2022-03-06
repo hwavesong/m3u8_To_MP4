@@ -8,7 +8,8 @@ import urllib.response
 def get_headers(customized_http_header):
     request_header = dict()
 
-    request_header['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36'
+    request_header[
+        'User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36'
 
     if customized_http_header is not None:
         request_header.update(customized_http_header)
@@ -16,7 +17,8 @@ def get_headers(customized_http_header):
     return request_header
 
 
-def request_for(url, max_try_times=1, headers=None, data=None, timeout=30, proxy_ip=None, verify=False, customized_http_header=None):
+def request_for(url, max_try_times=1, headers=None, data=None, timeout=30,
+                proxy_ip=None, verify=False, customized_http_header=None):
     response_code = -1
     response_content = None
 
@@ -25,9 +27,11 @@ def request_for(url, max_try_times=1, headers=None, data=None, timeout=30, proxy
             headers = get_headers(customized_http_header)
 
         try:
-            request = urllib.request.Request(url=url, data=data, headers=headers)
+            request = urllib.request.Request(url=url, data=data,
+                                             headers=headers)
 
-            with urllib.request.urlopen(url=request, timeout=timeout) as response:
+            with urllib.request.urlopen(url=request,
+                                        timeout=timeout) as response:
                 response_code = response.getcode()
                 response_content = response.read()
 

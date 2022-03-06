@@ -16,7 +16,9 @@ printer_helper.config_logging()
 
 
 class AbstractCrawler(object):
-    def __init__(self, m3u8_uri, customized_http_header=None, max_retry_times=3, num_concurrent=50, mp4_file_dir=None, mp4_file_name='m3u8-To-Mp4.mp4', tmpdir=None):
+    def __init__(self, m3u8_uri, customized_http_header=None,
+                 max_retry_times=3, num_concurrent=50, mp4_file_dir=None,
+                 mp4_file_name='m3u8-To-Mp4.mp4', tmpdir=None):
         self.m3u8_uri = m3u8_uri
         self.customized_http_header = customized_http_header
 
@@ -42,7 +44,10 @@ class AbstractCrawler(object):
         self._imitate_tar_file_path()
 
         print('\nsummary')
-        print('m3u8_uri: {};\nmax_retry_times: {};\ntmp_dir: {};\nmp4_file_path: {};\n'.format(self.m3u8_uri, self.max_retry_times, self.tmpdir, self.mp4_file_path))
+        print(
+            'm3u8_uri: {};\nmax_retry_times: {};\ntmp_dir: {};\nmp4_file_path: {};\n'.format(
+                self.m3u8_uri, self.max_retry_times, self.tmpdir,
+                self.mp4_file_path))
 
         return self
 
@@ -51,7 +56,8 @@ class AbstractCrawler(object):
 
     def _apply_for_tmpdir(self):
         os_tmp_dir = tempfile.gettempdir()
-        url_crc32_str = str(zlib.crc32(self.m3u8_uri.encode()))  # hash algorithm
+        url_crc32_str = str(
+            zlib.crc32(self.m3u8_uri.encode()))  # hash algorithm
 
         self.tmpdir = os.path.join(os_tmp_dir, 'm3u8_' + url_crc32_str)
 
@@ -63,7 +69,8 @@ class AbstractCrawler(object):
 
         for file_symbol in os.listdir(os_tmp_dir):
             if file_symbol.startswith('m3u8_'):
-                file_symbol_absolute_path = os.path.join(os_tmp_dir, file_symbol)
+                file_symbol_absolute_path = os.path.join(os_tmp_dir,
+                                                         file_symbol)
 
                 if os.path.isdir(file_symbol_absolute_path):
                     shutil.rmtree(file_symbol_absolute_path)
@@ -85,12 +92,14 @@ class AbstractCrawler(object):
     def _legalize_mp4_file_path(self):
         if not os.path.exists(self.mp4_file_dir):
             self.mp4_file_dir = os.getcwd()
-            print('{} does not exists, current directory is set automatically.')
+            print(
+                '{} does not exists, current directory is set automatically.')
 
         if self.mp4_file_dir is None:
             self.mp4_file_dir = os.getcwd()
 
-        is_valid, mp4_file_name = path_helper.calibrate_mp4_file_name(self.mp4_file_name)
+        is_valid, mp4_file_name = path_helper.calibrate_mp4_file_name(
+            self.mp4_file_name)
         if not is_valid:
             mp4_file_name = path_helper.create_mp4_file_name()
 
@@ -106,7 +115,8 @@ class AbstractCrawler(object):
         self.tar_file_path = self.mp4_file_path[:-4] + '.tar.bz2'
 
     def _resolve_DNS(self):
-        self.available_addr_info_pool = sync_DNS.available_addr_infos_of_url(self.m3u8_uri)
+        self.available_addr_info_pool = sync_DNS.available_addr_infos_of_url(
+            self.m3u8_uri)
         self.best_addr_info = self.available_addr_info_pool[0]
 
         logging.info('Resolved available hosts:')
@@ -126,8 +136,11 @@ class AbstractCrawler(object):
         return False
 
     def _filter_ads_ts(self, key_segments_pairs):
-        self.longest_common_subsequence = path_helper.longest_common_subsequence([segment_uri for _, segment_uri in key_segments_pairs])
-        key_segments_pairs = [(_encrypted_key, segment_uri) for _encrypted_key, segment_uri in key_segments_pairs if not self._is_ads(segment_uri)]
+        self.longest_common_subsequence = path_helper.longest_common_subsequence(
+                [segment_uri for _, segment_uri in key_segments_pairs])
+        key_segments_pairs = [(_encrypted_key, segment_uri) for
+                              _encrypted_key, segment_uri in key_segments_pairs
+                              if not self._is_ads(segment_uri)]
 
         return key_segments_pairs
 
@@ -141,8 +154,11 @@ class AbstractCrawler(object):
 
     def _filter_done_ts(self, key_segments_pairs):
         num_ts_segments = len(key_segments_pairs)
-        key_segments_pairs = [(_encrypted_key, segment_uri) for _encrypted_key, segment_uri in key_segments_pairs if not self._is_fetched(segment_uri)]
-        self.num_fetched_ts_segments = num_ts_segments - len(key_segments_pairs)
+        key_segments_pairs = [(_encrypted_key, segment_uri) for
+                              _encrypted_key, segment_uri in key_segments_pairs
+                              if not self._is_fetched(segment_uri)]
+        self.num_fetched_ts_segments = num_ts_segments - len(
+            key_segments_pairs)
 
         return key_segments_pairs
 
@@ -159,7 +175,8 @@ class AbstractCrawler(object):
 
     def _merge_to_mp4_by_ffmpeg(self):
         merge_cmd = "ffmpeg -y -f concat -safe 0 -i " + '"' + self.segment_path_recipe + '"' + " -c copy " + '"' + self.mp4_file_path + '"'
-        p = subprocess.Popen(merge_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        p = subprocess.Popen(merge_cmd, shell=True, stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE)
 
         logging.info("merging segments...")
 
@@ -195,9 +212,11 @@ class AbstractCrawler(object):
             self._merge_to_mp4_by_ffmpeg()
 
             task_end_time = time.time()
-            printer_helper.display_speed(task_start_time, fetch_end_time, task_end_time, self.mp4_file_path)
+            printer_helper.display_speed(task_start_time, fetch_end_time,
+                                         task_end_time, self.mp4_file_path)
         else:
             self._merge_to_tar_by_os()
 
             task_end_time = time.time()
-            printer_helper.display_speed(task_start_time, fetch_end_time, task_end_time, self.tar_file_path)
+            printer_helper.display_speed(task_start_time, fetch_end_time,
+                                         task_end_time, self.tar_file_path)
