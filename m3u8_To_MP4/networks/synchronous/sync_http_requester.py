@@ -10,7 +10,7 @@ def get_headers(customized_http_header):
 
     request_header['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36'
 
-    if len(customized_http_header) > 0:
+    if customized_http_header is not None:
         request_header.update(customized_http_header)
 
     return request_header

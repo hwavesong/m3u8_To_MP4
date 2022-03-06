@@ -17,7 +17,7 @@ def http_get_header(domain_name, port, resource_path_at_server, is_keep_alive, c
     user_agent = http_base.random_user_agent()
     request_header['User-Agent'] = user_agent
 
-    if len(customized_http_header) > 0:
+    if customized_http_header is not None:
         request_header.update(customized_http_header)
 
     # http_connection = http_base.statement_of_http_connection(is_keep_alive)
