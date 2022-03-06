@@ -45,9 +45,9 @@ class AbstractCrawler(object):
 
         print('\nsummary')
         print(
-            'm3u8_uri: {};\nmax_retry_times: {};\ntmp_dir: {};\nmp4_file_path: {};\n'.format(
-                self.m3u8_uri, self.max_retry_times, self.tmpdir,
-                self.mp4_file_path))
+                'm3u8_uri: {};\nmax_retry_times: {};\ntmp_dir: {};\nmp4_file_path: {};\n'.format(
+                        self.m3u8_uri, self.max_retry_times, self.tmpdir,
+                        self.mp4_file_path))
 
         return self
 
@@ -57,7 +57,7 @@ class AbstractCrawler(object):
     def _apply_for_tmpdir(self):
         os_tmp_dir = tempfile.gettempdir()
         url_crc32_str = str(
-            zlib.crc32(self.m3u8_uri.encode()))  # hash algorithm
+                zlib.crc32(self.m3u8_uri.encode()))  # hash algorithm
 
         self.tmpdir = os.path.join(os_tmp_dir, 'm3u8_' + url_crc32_str)
 
@@ -93,13 +93,13 @@ class AbstractCrawler(object):
         if not os.path.exists(self.mp4_file_dir):
             self.mp4_file_dir = os.getcwd()
             print(
-                '{} does not exists, current directory is set automatically.')
+                    '{} does not exists, current directory is set automatically.')
 
         if self.mp4_file_dir is None:
             self.mp4_file_dir = os.getcwd()
 
         is_valid, mp4_file_name = path_helper.calibrate_mp4_file_name(
-            self.mp4_file_name)
+                self.mp4_file_name)
         if not is_valid:
             mp4_file_name = path_helper.create_mp4_file_name()
 
@@ -116,7 +116,7 @@ class AbstractCrawler(object):
 
     def _resolve_DNS(self):
         self.available_addr_info_pool = sync_DNS.available_addr_infos_of_url(
-            self.m3u8_uri)
+                self.m3u8_uri)
         self.best_addr_info = self.available_addr_info_pool[0]
 
         logging.info('Resolved available hosts:')
@@ -158,7 +158,7 @@ class AbstractCrawler(object):
                               _encrypted_key, segment_uri in key_segments_pairs
                               if not self._is_fetched(segment_uri)]
         self.num_fetched_ts_segments = num_ts_segments - len(
-            key_segments_pairs)
+                key_segments_pairs)
 
         return key_segments_pairs
 
@@ -197,6 +197,8 @@ class AbstractCrawler(object):
 
         # resolve ts segment uris
         key_segments_pairs = self._create_tasks()
+        if len(key_segments_pairs) < 1:
+            raise ValueError('NO FOUND TASKS!\n Please check m3u8 url.')
 
         key_segments_pairs = self._filter_ads_ts(key_segments_pairs)
         self._construct_segment_path_recipe(key_segments_pairs)
