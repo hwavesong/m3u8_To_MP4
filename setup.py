@@ -12,7 +12,7 @@ install_reqs = [req for req in open(abspath(join(dirname(__file__), 'requirement
 
 setup(
         name='m3u8-To-MP4',
-        version="0.1.7",
+        version="0.1.8",
         description="Python downloader for saving m3u8 video to local MP4 file.",
         long_description_content_type="text/x-rst",
         long_description=long_description,
