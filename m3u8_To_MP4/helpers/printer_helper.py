@@ -5,8 +5,8 @@ import sys
 
 
 def config_logging():
-    logging.basicConfig(format='%(asctime)s | %(levelname)s | %(message)s',
-                        level=logging.INFO)
+    str_format = '%(asctime)s | %(levelname)s | %(message)s'
+    logging.basicConfig(format=str_format, level=logging.INFO)
 
 
 class ProcessBar:
