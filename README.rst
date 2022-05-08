@@ -25,8 +25,12 @@ Install m3u8_To_MP4 via pip
 
     .. code-block:: python
 
-       pip install m3u8_To_MP4
+       # via pypi.org
+       python -m pip install m3u8_To_MP4
 
+       # first clone project, and install.
+       git clone https://github.com/songs18/m3u8_To_MP4.git
+       python -m pip install ./m3u8_To_MP4
 
 
 Download a mp4 video
