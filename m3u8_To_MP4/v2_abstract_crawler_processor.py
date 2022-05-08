@@ -98,15 +98,15 @@ class AbstractCrawler(object):
         if self.mp4_file_dir is None:
             self.mp4_file_dir = os.getcwd()
 
-        is_valid, mp4_file_name = path_helper.calibrate_mp4_file_name(
+        mp4_file_name = path_helper.calibrate_mp4_file_name(
                 self.mp4_file_name)
-        if not is_valid:
-            mp4_file_name = path_helper.create_mp4_file_name()
+        # if not is_valid:
+        #     mp4_file_name = path_helper.create_mp4_file_name()
 
         mp4_file_path = os.path.join(self.mp4_file_dir, mp4_file_name)
 
         if os.path.exists(mp4_file_path):
-            mp4_file_name = path_helper.create_mp4_file_name()
+            mp4_file_name = path_helper.random_name()
             mp4_file_path = os.path.join(self.mp4_file_dir, mp4_file_name)
 
         self.mp4_file_path = mp4_file_path
