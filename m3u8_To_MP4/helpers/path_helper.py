@@ -35,7 +35,7 @@ def random_5_char():
 
 def random_name():
     dt_str = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
-    return 'mtp' + dt_str + random_5_char()
+    return 'm3u8_To_MP4' + dt_str + random_5_char()+'.mp4'
 
 
 def calibrate_name(name):

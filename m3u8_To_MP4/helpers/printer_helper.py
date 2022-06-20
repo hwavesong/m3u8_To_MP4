@@ -49,17 +49,13 @@ class ProcessBar:
         self.display()
 
 
-def display_speed(start_time, fetch_end_time, task_end_time,
-                  target_mp4_file_path):
+def display_speed(start_time, fetch_end_time, task_end_time, target_mp4_file_path):
     download_time = fetch_end_time - start_time
     total_time = task_end_time - start_time
 
     if download_time < 0.01:
         download_speed = os.path.getsize(target_mp4_file_path) / 1024
     else:
-        download_speed = os.path.getsize(
-            target_mp4_file_path) / download_time / 1024
+        download_speed = os.path.getsize( target_mp4_file_path) / download_time / 1024
 
-    logging.info(
-        "download successfully！ take {:.2f}s,  average download speed is {:.2f}KB/s".format(
-            total_time, download_speed))
+    logging.info( "download successfully！ take {:.2f}s,  average download speed is {:.2f}KB/s".format( total_time, download_speed))

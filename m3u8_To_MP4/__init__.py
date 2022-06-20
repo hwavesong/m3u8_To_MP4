@@ -56,7 +56,7 @@ __all__ = (
 # ================ Async ===================
 def async_download(m3u8_uri, customized_http_header=None, max_retry_times=3,
                    num_concurrent=50, mp4_file_dir=None,
-                   mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
+                   mp4_file_name='m3u8_To_MP4.mp4', tmpdir=None):
     '''
     Download mp4 video from given m3u uri.
 
@@ -80,7 +80,7 @@ def async_download(m3u8_uri, customized_http_header=None, max_retry_times=3,
 
 def async_uri_download(m3u8_uri, customized_http_header=None,
                        max_retry_times=3, num_concurrent=50, mp4_file_dir=None,
-                       mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
+                       mp4_file_name='m3u8_To_MP4.mp4', tmpdir=None):
     with m3u8_To_MP4.v2_async_processor.AsynchronousUriCrawler(m3u8_uri,
                                                                customized_http_header,
                                                                max_retry_times,
@@ -93,7 +93,7 @@ def async_uri_download(m3u8_uri, customized_http_header=None,
 
 def async_file_download(m3u8_uri, m3u8_file_path, customized_http_header=None,
                         max_retry_times=3, num_concurrent=50,
-                        mp4_file_dir=None, mp4_file_name='m3u8_To_Mp4.mp4',
+                        mp4_file_dir=None, mp4_file_name='m3u8_To_MP4.mp4',
                         tmpdir=None):
     with m3u8_To_MP4.v2_async_processor.AsynchronousFileCrawler(m3u8_uri,
                                                                 m3u8_file_path,
@@ -109,7 +109,7 @@ def async_file_download(m3u8_uri, m3u8_file_path, customized_http_header=None,
 # ================ MultiThread ===================
 def multithread_download(m3u8_uri, customized_http_header=None,
                          max_retry_times=3, max_num_workers=100,
-                         mp4_file_dir='./', mp4_file_name='m3u8_To_Mp4.mp4',
+                         mp4_file_dir='./', mp4_file_name='m3u8_To_MP4.mp4',
                          tmpdir=None):
     '''
     Download mp4 video from given m3u uri.
@@ -134,7 +134,7 @@ def multithread_download(m3u8_uri, customized_http_header=None,
 def multithread_uri_download(m3u8_uri, customied_http_header=None,
                              max_retry_times=3, max_num_workers=100,
                              mp4_file_dir='./',
-                             mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
+                             mp4_file_name='m3u8_To_MP4.mp4', tmpdir=None):
     with m3u8_To_MP4.v2_multithreads_processor.MultiThreadsUriCrawler(m3u8_uri,
                                                                       customied_http_header,
                                                                       max_retry_times,
@@ -148,7 +148,7 @@ def multithread_uri_download(m3u8_uri, customied_http_header=None,
 def multithread_file_download(m3u8_uri, m3u8_file_path,
                               customized_http_header=None, max_retry_times=3,
                               max_num_workers=100, mp4_file_dir='./',
-                              mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
+                              mp4_file_name='m3u8_To_MP4.mp4', tmpdir=None):
     with m3u8_To_MP4.v2_multithreads_processor.MultiThreadsFileCrawler(
             m3u8_uri, m3u8_file_path, customized_http_header, max_retry_times,
             max_num_workers, mp4_file_dir, mp4_file_name, tmpdir) as crawler:
@@ -160,7 +160,7 @@ import warnings
 
 
 def download(m3u8_uri, max_retry_times=3, max_num_workers=100,
-             mp4_file_dir='./', mp4_file_name='m3u8_To_Mp4.mp4', tmpdir=None):
+             mp4_file_dir='./', mp4_file_name='m3u8_To_MP4.mp4', tmpdir=None):
     '''
     Download mp4 video from given m3u uri.
 
