@@ -52,8 +52,7 @@ class AbstractCrawler(object):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        # self._freeup_tmpdir()
-        pass
+        self._freeup_tmpdir()
 
     def _apply_for_tmpdir(self):
         os_tmp_dir = tempfile.gettempdir()
