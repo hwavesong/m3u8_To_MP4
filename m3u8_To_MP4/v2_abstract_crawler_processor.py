@@ -17,9 +17,15 @@ printer_helper.config_logging()
 
 
 class AbstractCrawler(object):
-    def __init__(self, m3u8_uri, customized_http_header=None,
-                 max_retry_times=3, num_concurrent=50, mp4_file_dir=None,
-                 mp4_file_name='mtm.mp4', tmpdir=None):
+    def __init__(self,
+                 m3u8_uri,
+                 customized_http_header=None,
+                 max_retry_times=3,
+                 num_concurrent=50,
+                 mp4_file_dir=None,
+                 mp4_file_name='m3u8_To_MP4',
+                 tmpdir=None
+                 ):
         self.m3u8_uri = m3u8_uri
         self.customized_http_header = customized_http_header
 
@@ -56,8 +62,7 @@ class AbstractCrawler(object):
 
     def _apply_for_tmpdir(self):
         os_tmp_dir = tempfile.gettempdir()
-        url_crc32_str = str(
-                zlib.crc32(self.m3u8_uri.encode()))  # hash algorithm
+        url_crc32_str = str(zlib.crc32(self.m3u8_uri.encode()))  # hash algorithm
 
         self.tmpdir = os.path.join(os_tmp_dir, 'm3u8_' + url_crc32_str)
 
@@ -132,8 +137,7 @@ class AbstractCrawler(object):
         return False
 
     def _filter_ads_ts(self, key_segments_pairs):
-        self.longest_common_subsequence = path_helper.longest_common_subsequence(
-                [segment_uri for _, segment_uri in key_segments_pairs])
+        self.longest_common_subsequence = path_helper.longest_common_subsequence([segment_uri for _, segment_uri in key_segments_pairs])
         key_segments_pairs = [(_encrypted_key, segment_uri) for
                               _encrypted_key, segment_uri in key_segments_pairs
                               if not self._is_ads(segment_uri)]
@@ -153,8 +157,7 @@ class AbstractCrawler(object):
         key_segments_pairs = [(_encrypted_key, segment_uri) for
                               _encrypted_key, segment_uri in key_segments_pairs
                               if not self._is_fetched(segment_uri)]
-        self.num_fetched_ts_segments = num_ts_segments - len(
-                key_segments_pairs)
+        self.num_fetched_ts_segments = num_ts_segments - len( key_segments_pairs)
 
         return key_segments_pairs
 
@@ -231,5 +234,4 @@ class AbstractCrawler(object):
             self._merge_to_tar_by_os()
 
             task_end_time = time.time()
-            printer_helper.display_speed(task_start_time, fetch_end_time,
-                                         task_end_time, self.tar_file_path)
+            printer_helper.display_speed(task_start_time, fetch_end_time, task_end_time, self.tar_file_path)
