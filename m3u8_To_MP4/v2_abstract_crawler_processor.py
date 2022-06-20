@@ -11,6 +11,7 @@ import zlib
 from m3u8_To_MP4.helpers import path_helper
 from m3u8_To_MP4.helpers import printer_helper
 from m3u8_To_MP4.networks.synchronous import sync_DNS
+from m3u8_To_MP4.helpers.os_helper import get_core_count
 
 printer_helper.config_logging()
 
@@ -174,7 +175,7 @@ class AbstractCrawler(object):
                 fw.write("file '{}'\n".format(segment_file_path))
 
     def _merge_to_mp4_by_ffmpeg(self):
-        merge_cmd = "ffmpeg -y -f concat -safe 0 -i " + '"' + self.segment_path_recipe + '"' + " -c copy " + '"' + self.mp4_file_path + '"'
+        merge_cmd = "ffmpeg -y -f concat -threads {} -safe 0 -i ".format(get_core_count()) + '"' + self.segment_path_recipe + '"' + " -c:a aac " + '"' + self.mp4_file_path + '"'
         p = subprocess.Popen(merge_cmd, shell=True, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
 
