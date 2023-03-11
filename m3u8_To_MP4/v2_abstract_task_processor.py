@@ -156,7 +156,6 @@ class AbstractUriCrawler(AbstractCrawler):
                     raise Exception('DOWNLOAD KEY FAILED, URI IS {}'.format(
                         key.absolute_uri))
 
-                encryped_value = encryped_value.decode()
                 _encrypted_key = EncryptedKey(method=key.method,
                                               value=encryped_value, iv=key.iv)
 
