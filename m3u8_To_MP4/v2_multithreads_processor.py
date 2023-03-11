@@ -73,7 +73,7 @@ class MultiThreadsFileCrawler(v2_abstract_task_processor.AbstractFileCrawler):
                 if key is not None:
                     crypt_ls = {"AES-128": AES}
                     crypt_obj = crypt_ls[key.method]
-                    cryptor = crypt_obj.new(key.value.encode(),
+                    cryptor = crypt_obj.new(key.value,
                                             crypt_obj.MODE_CBC)
                     encrypted_data = cryptor.decrypt(encrypted_data)
 
