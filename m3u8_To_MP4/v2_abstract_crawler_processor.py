@@ -178,6 +178,9 @@ class AbstractCrawler(object):
         p = subprocess.Popen(merge_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         p.communicate()
 
+        if p.returncode != 0:
+            logging.info(f"Command failed with return code: {p.returncode}")
+
         # change codec
         if os.path.getsize(self.file_path) < 1:
             logging.info("merged failed.")
@@ -189,6 +192,8 @@ class AbstractCrawler(object):
                         '"' + self.file_path + '"'
             p = subprocess.Popen(merge_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             p.communicate()
+            if p.returncode != 0:
+                logging.info(f"Command failed with return code: {p.returncode}")
 
     def _merge_to_ts(self):
         if not self.file_path.endswith('ts'):
