@@ -215,6 +215,10 @@ class AbstractCrawler(object):
             targz.add(name=self.tmpdir, arcname=os.path.basename(self.tmpdir))
 
     def fetch_mp4_by_m3u8_uri(self, format='ts'):
+        
+        if self.tmpdir is not None:
+            os.mkdir(self.tmpdir, exist_ok=True)
+
         task_start_time = time.time()
 
         # preparation
