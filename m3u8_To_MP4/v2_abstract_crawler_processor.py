@@ -159,7 +159,7 @@ class AbstractCrawler(object):
         with open(self.segment_path_recipe, 'w', encoding='utf8') as fw:
             for _, segment in key_segment_pairs:
                 file_name = path_helper.resolve_file_name_by_uri(segment)
-                segment_file_path = os.path.join(self.tmpdir, file_name)
+                segment_file_path = file_name
 
                 fw.write("file '{}'\n".format(segment_file_path))
 
@@ -215,7 +215,7 @@ class AbstractCrawler(object):
             targz.add(name=self.tmpdir, arcname=os.path.basename(self.tmpdir))
 
     def fetch_mp4_by_m3u8_uri(self, format='ts'):
-        
+
         if self.tmpdir is not None:
             os.mkdir(self.tmpdir, exist_ok=True)
 
