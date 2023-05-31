@@ -103,7 +103,7 @@ def async_file_download(m3u8_uri, m3u8_file_path, file_path='./m3u8_To_MP4.ts', 
 
 # ================ MultiThread ===================
 def multithread_download(m3u8_uri, file_path='./m3u8_To_MP4.mp4', customized_http_header=None,
-                         max_retry_times=3, max_num_workers=100, tmpdir=None):
+                         max_retry_times=3, max_num_workers=100, tmpdir=None, proxy=None):
     '''
     Download mp4 video from given m3u uri.
 
@@ -120,27 +120,29 @@ def multithread_download(m3u8_uri, file_path='./m3u8_To_MP4.mp4', customized_htt
                                                                       customized_http_header,
                                                                       max_retry_times,
                                                                       max_num_workers,
-                                                                      tmpdir) as crawler:
+                                                                      tmpdir,
+                                                                      proxy) as crawler:
         crawler.fetch_mp4_by_m3u8_uri('ts')
 
 
 def multithread_uri_download(m3u8_uri, file_path='./m3u8_To_MP4.ts', customied_http_header=None,
-                             max_retry_times=3, max_num_workers=100, tmpdir=None):
+                             max_retry_times=3, max_num_workers=100, tmpdir=None, proxy=None):
     with m3u8_To_MP4.v2_multithreads_processor.MultiThreadsUriCrawler(m3u8_uri,
                                                                       file_path,
                                                                       customied_http_header,
                                                                       max_retry_times,
                                                                       max_num_workers,
-                                                                      tmpdir) as crawler:
+                                                                      tmpdir,
+                                                                      proxy) as crawler:
         crawler.fetch_mp4_by_m3u8_uri('ts')
 
 
 def multithread_file_download(m3u8_uri, m3u8_file_path, file_path,
                               customized_http_header=None, max_retry_times=3,
-                              max_num_workers=100, tmpdir=None):
+                              max_num_workers=100, tmpdir=None, proxy=None):
     with m3u8_To_MP4.v2_multithreads_processor.MultiThreadsFileCrawler(
             m3u8_uri, m3u8_file_path, file_path, customized_http_header, max_retry_times,
-            max_num_workers, tmpdir) as crawler:
+            max_num_workers, tmpdir, proxy) as crawler:
         crawler.fetch_mp4_by_m3u8_uri(True)
 
 

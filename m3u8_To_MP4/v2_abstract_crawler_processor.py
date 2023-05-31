@@ -24,7 +24,8 @@ class AbstractCrawler(object):
                  customized_http_header=None,
                  max_retry_times=3,
                  num_concurrent=50,
-                 tmpdir=None
+                 tmpdir=None,
+                 proxy=None
                  ):
         self.m3u8_uri = m3u8_uri
         self.customized_http_header = customized_http_header
@@ -35,6 +36,7 @@ class AbstractCrawler(object):
         self.tmpdir = tmpdir
 
         self.file_path = file_path
+        self.proxy = proxy
 
     def __enter__(self):
         if self.tmpdir is None:
@@ -191,7 +193,7 @@ class AbstractCrawler(object):
             p.communicate()
 
     def _merge_to_ts(self):
-        if not self.file_path.endswith('ts'):
+        if not self.file_path.endswith('mp4'):
             warnings.warn('{} does not end with .mp4'.format(self.file_path))
 
         ts_paths = list()

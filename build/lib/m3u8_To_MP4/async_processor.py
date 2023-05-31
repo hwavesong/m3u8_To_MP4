@@ -26,14 +26,14 @@ EncryptedKey = collections.namedtuple(typename='EncryptedKey',
 class Crawler(object):
     def __init__(self, m3u8_uri, max_retry_times=3, num_concurrent=50,
                  mp4_file_dir=None, mp4_file_name='m3u8-To-Mp4.mp4',
-                 tmpdir=None):
+                 tmpdir=None, proxy=None):
         self.m3u8_uri = m3u8_uri
 
         self.max_retry_times = max_retry_times
         self.num_concurrent = num_concurrent
 
         self.tmpdir = tmpdir
-
+        self.proxy = proxy
         self.mp4_file_dir = mp4_file_dir
         self.mp4_file_name = mp4_file_name
 
@@ -128,7 +128,7 @@ class Crawler(object):
     def _request_m3u8_obj_from_url(self):
         try:
             response_code, m3u8_bytes = sync_http.retrieve_resource_from_url(
-                self.best_addr_info, self.m3u8_uri)
+                self.best_addr_info, self.m3u8_uri, self.proxy)
             if response_code != 200:
                 raise Exception(
                     'DOWNLOAD KEY FAILED, URI IS {}'.format(self.m3u8_uri))
