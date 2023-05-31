@@ -1,0 +1,6 @@
+{
+  "python.terminal.activateEnvInCurrentTerminal": true,
+  "terminal.integrated.env.linux": {
+    "PYTHONPATH": "${workspaceFolder}"
+  },
+}

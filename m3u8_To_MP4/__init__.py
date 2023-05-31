@@ -102,16 +102,17 @@ def async_file_download(m3u8_uri, m3u8_file_path, file_path='./m3u8_To_MP4.ts', 
 
 
 # ================ MultiThread ===================
-def multithread_download(m3u8_uri, file_path='./m3u8_To_MP4.ts', customized_http_header=None,
+def multithread_download(m3u8_uri, file_path='./m3u8_To_MP4.mp4', customized_http_header=None,
                          max_retry_times=3, max_num_workers=100, tmpdir=None):
     '''
     Download mp4 video from given m3u uri.
 
     :param m3u8_uri: m3u8 uri
+    :param file_path: mp4 file path
+    :param customized_http_header: headers that may be required to download the m3u8
     :param max_retry_times: max retry times
     :param max_num_workers: number of download threads
-    :param mp4_file_dir: folder path where mp4 file is stored
-    :param mp4_file_name: a mp4 file name with suffix ".mp4"
+    
     :return:
     '''
     with m3u8_To_MP4.v2_multithreads_processor.MultiThreadsUriCrawler(m3u8_uri,

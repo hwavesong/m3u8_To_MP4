@@ -47,7 +47,7 @@ def retrieve_resource_from_url(address_info, url, is_keep_alive=False,
 
         try:
             request = urllib.request.Request(url=url, headers=headers)
-
+            request.set_proxy("http://coxswain-proxy-nginx.coxswain.svc.sandbox.internal:8080", "http")
             with urllib.request.urlopen(url=request,
                                         timeout=timeout) as response:
                 response_code = response.getcode()
