@@ -26,14 +26,15 @@ EncryptedKey = collections.namedtuple(typename='EncryptedKey',
 class Crawler(object):
     def __init__(self, m3u8_uri, max_retry_times=3, num_concurrent=50,
                  mp4_file_dir=None, mp4_file_name='m3u8-To-Mp4.mp4',
-                 tmpdir=None):
+                 tmpdir=None,
+                 proxy=None):
         self.m3u8_uri = m3u8_uri
 
         self.max_retry_times = max_retry_times
         self.num_concurrent = num_concurrent
 
         self.tmpdir = tmpdir
-
+        self.proxy = proxy
         self.mp4_file_dir = mp4_file_dir
         self.mp4_file_name = mp4_file_name
 
@@ -241,7 +242,8 @@ class Crawler(object):
                                                  key_segments_pairs,
                                                  self.available_addr_info_pool,
                                                  self.num_concurrent,
-                                                 self.tmpdir)
+                                                 self.tmpdir,
+                                                 self.proxy)
 
     def _construct_segment_path_recipe(self, key_segment_pairs):
         with open(self.segment_path_recipe, 'w', encoding='utf8') as fw:

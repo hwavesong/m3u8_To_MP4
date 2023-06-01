@@ -19,15 +19,14 @@ from m3u8_To_MP4.networks.asynchronous import async_http
 
 
 async def ts_request(concurrent_condition, ssl_context, addr_info,
-                     _encrypted_key, segment_uri):
+                     _encrypted_key, segment_uri, proxy):
     async with concurrent_condition:
-        response_header_state, response_content_bytes = await async_http.retrieve_resource_from_url(
-            addr_info, segment_uri, ssl_context, limit=256 * 1024)
+        response_header_state, response_content_bytes = await async_http.retrieve_resource_from_url(segment_uri, proxy=proxy)
     return addr_info, segment_uri, response_header_state, _encrypted_key, response_content_bytes
 
 
 async def ts_producer_scheduler(key_segment_pairs, addr_infos, ts_queue,
-                                num_concurrent, addr_quantity_statistics):
+                                num_concurrent, addr_quantity_statistics, proxy):
     exec_event_loop = asyncio.get_event_loop()
 
     # concurrent_condition = asyncio.Semaphore(value=50, loop=exec_event_loop)# Python 3.10 does not recommend
@@ -42,7 +41,7 @@ async def ts_producer_scheduler(key_segment_pairs, addr_infos, ts_queue,
                                                         itertools.cycle(
                                                                 addr_infos)):
         task_params.append((concurrent_condition, default_ssl_context,
-                            addr_info, _encrypted_key, segment_uri))
+                            addr_info, _encrypted_key, segment_uri, proxy))
 
     awaitable_tasks = list()
     for params in task_params:
@@ -64,7 +63,7 @@ async def ts_producer_scheduler(key_segment_pairs, addr_infos, ts_queue,
     return incompleted_tasks, addr_quantity_statistics
 
 
-def producer_process(key_segment_uris, addr_infos, ts_queue, num_concurrent):
+def producer_process(key_segment_uris, addr_infos, ts_queue, num_concurrent, proxy):
     incompleted_tasks = key_segment_uris
 
     num_efficient_addr_info = int(len(addr_infos) * 0.5)
@@ -80,7 +79,7 @@ def producer_process(key_segment_uris, addr_infos, ts_queue, num_concurrent):
     while len(incompleted_tasks) > 0:
         incompleted_tasks, addr_quantity_statistics = asyncio.run(
             ts_producer_scheduler(incompleted_tasks, addr_infos, ts_queue,
-                                  num_concurrent, addr_quantity_statistics))
+                                  num_concurrent, addr_quantity_statistics, proxy))
 
         efficient_hosts = [host for host, _ in
                            addr_quantity_statistics.most_common()]
@@ -116,7 +115,7 @@ def consumer_process(ts_queue, tmpdir, progress_bar):
 
 
 def factory_pipeline(num_fetched_ts_segments, key_segments_pairs,
-                     available_addr_info_pool, num_concurrent, tmpdir):
+                     available_addr_info_pool, num_concurrent, tmpdir, proxy):
     num_ts_segments = len(key_segments_pairs)
     progress_bar = printer_helper.ProcessBar(num_fetched_ts_segments,
                                              num_ts_segments + num_fetched_ts_segments,
@@ -127,7 +126,7 @@ def factory_pipeline(num_fetched_ts_segments, key_segments_pairs,
     ts_queue = JoinableQueue()
 
     ts_producer = Process(target=producer_process, args=(
-    key_segments_pairs, available_addr_info_pool, ts_queue, num_concurrent))
+    key_segments_pairs, available_addr_info_pool, ts_queue, num_concurrent, proxy))
     ts_consumer = Process(target=consumer_process,
                           args=(ts_queue, tmpdir, progress_bar))
 

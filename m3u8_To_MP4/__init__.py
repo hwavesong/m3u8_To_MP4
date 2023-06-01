@@ -57,7 +57,7 @@ __all__ = (
 
 # ================ Async ===================
 def async_download(m3u8_uri, file_path='./m3u8_To_MP4.ts', customized_http_header=None, max_retry_times=3,
-                   num_concurrent=50, tmpdir=None):
+                   num_concurrent=50, tmpdir=None, proxy=None):
     '''
     Download mp4 video from given m3u uri.
 
@@ -74,30 +74,33 @@ def async_download(m3u8_uri, file_path='./m3u8_To_MP4.ts', customized_http_heade
                                                                customized_http_header,
                                                                max_retry_times,
                                                                num_concurrent,
-                                                               tmpdir) as crawler:
+                                                               tmpdir,
+                                                               proxy) as crawler:
         crawler.fetch_mp4_by_m3u8_uri('ts')
 
 
 def async_uri_download(m3u8_uri, file_path='./m3u8_To_MP4.mp4', customized_http_header=None,
-                       max_retry_times=3, num_concurrent=50, tmpdir=None):
+                       max_retry_times=3, num_concurrent=50, tmpdir=None, proxy=None):
     with m3u8_To_MP4.v2_async_processor.AsynchronousUriCrawler(m3u8_uri,
                                                                file_path,
                                                                customized_http_header,
                                                                max_retry_times,
                                                                num_concurrent,
-                                                               tmpdir) as crawler:
+                                                               tmpdir,
+                                                               proxy) as crawler:
         crawler.fetch_mp4_by_m3u8_uri('ts')
 
 
 def async_file_download(m3u8_uri, m3u8_file_path, file_path='./m3u8_To_MP4.ts', customized_http_header=None,
-                        max_retry_times=3, num_concurrent=50, tmpdir=None):
+                        max_retry_times=3, num_concurrent=50, tmpdir=None, proxy=None):
     with m3u8_To_MP4.v2_async_processor.AsynchronousFileCrawler(m3u8_uri,
                                                                 m3u8_file_path,
                                                                 file_path,
                                                                 customized_http_header,
                                                                 max_retry_times,
                                                                 num_concurrent,
-                                                                tmpdir) as crawler:
+                                                                tmpdir,
+                                                                proxy) as crawler:
         crawler.fetch_mp4_by_m3u8_uri('ts')
 
 

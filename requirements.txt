@@ -2,3 +2,5 @@ iso8601>=0.1.14
 m3u8>=0.9.0
 pycryptodome>=3.10.1
 requests>=2.31.0
+httpx==0.24.1
+h2==4.1.0
