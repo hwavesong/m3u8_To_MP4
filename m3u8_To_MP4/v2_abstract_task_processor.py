@@ -27,7 +27,7 @@ class M3u8PlaylistIsNoneException(Exception):
 class AbstractFileCrawler(AbstractCrawler):
     def __init__(self, m3u8_uri, m3u8_file_path, customized_http_header=None,
                  max_retry_times=3, num_concurrent=50, mp4_file_dir=None,
-                 mp4_file_name='m3u8-To-Mp4.mp4', tmpdir=None, proxy=None):
+                 mp4_file_name='m3u8-To-Mp4.mp4', tmpdir=None, proxy=None, tracker=None):
         file_path=os.path.join(mp4_file_dir,mp4_file_name)
         super(AbstractFileCrawler, self).__init__(m3u8_uri,
                                                   file_path,
@@ -35,7 +35,8 @@ class AbstractFileCrawler(AbstractCrawler):
                                                   max_retry_times,
                                                   num_concurrent,
                                                   tmpdir,
-                                                  proxy)
+                                                  proxy,
+                                                  tracker)
         self.m3u8_file_path = m3u8_file_path
 
     def _read_m3u8_file(self):

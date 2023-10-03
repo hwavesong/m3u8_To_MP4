@@ -12,7 +12,7 @@ def config_logging():
 class ProcessBar:
     def __init__(self, progress, max_iter, prefix='Progress',
                  suffix='downloading', completed_suffix='completed',
-                 bar_length=50):
+                 bar_length=50, tracker=None):
         self.progress = progress
         self.max_iter = max_iter
 
@@ -22,6 +22,7 @@ class ProcessBar:
         self.suffix = suffix
 
         self.completed_suffix = completed_suffix
+        self.tracker = tracker
 
     def display(self):
         progress_rate = self.progress / self.max_iter
@@ -45,7 +46,8 @@ class ProcessBar:
 
     def update(self):
         self.progress += 1
-
+        if self.tracker:
+            self.tracker(self.progress)
         self.display()
 
 

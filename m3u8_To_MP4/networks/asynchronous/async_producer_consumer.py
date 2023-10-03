@@ -115,12 +115,13 @@ def consumer_process(ts_queue, tmpdir, progress_bar):
 
 
 def factory_pipeline(num_fetched_ts_segments, key_segments_pairs,
-                     available_addr_info_pool, num_concurrent, tmpdir, proxy):
+                     available_addr_info_pool, num_concurrent, tmpdir, proxy, tracker):
     num_ts_segments = len(key_segments_pairs)
     progress_bar = printer_helper.ProcessBar(num_fetched_ts_segments,
                                              num_ts_segments + num_fetched_ts_segments,
                                              'segment set', 'downloading...',
-                                             'downloaded segments successfully!')
+                                             'downloaded segments successfully!',
+                                             tracker=tracker)
 
     # schedule tasks
     ts_queue = JoinableQueue()

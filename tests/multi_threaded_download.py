@@ -19,11 +19,13 @@ class TestDownloadFunction(unittest.TestCase):
         self.assertEqual(mp4MD5, getMD5(mp4Path))
 
     def test_multithread_proxy_download(self):
-        testURI = "https://stream.us-central1-b.swagit.com/on-demand/_definst_/mp4:vault01/dentontx/b90ebdf3-69a0-4c06-9fba-1c41c2c4d949.mp4/playlist.m3u8"
+        def tracker(progress):
+            print(f'Tracking {progress}')
+        testURI = "https://reflect-thornton.cablecast.tv/store-3/1225-Thornton-City-Council-Meeting-August-22-2023-v1/1080p.m3u8?duration=0"
         mp4Path = "./data/test_multithread_proxy_download.mp4"
         mp4MD5 = "2ffd46cbb1da38e1518ea9ed09b03948"
         m3u8_To_MP4.multithread_download(testURI, file_path=mp4Path, max_num_workers=60,
-                                         max_retry_times=5, proxy="http://coxswain-proxy-nginx.coxswain.svc.sandbox.internal:8080")
+                                         max_retry_times=5, proxy="http://coxswain-proxy-nginx.coxswain.svc.sandbox.internal:8080", tracker=tracker)
         self.assertEqual(mp4MD5, getMD5(mp4Path))
 
 if __name__ == '__main__':

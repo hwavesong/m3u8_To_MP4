@@ -93,7 +93,8 @@ class MultiThreadsUriCrawler(v2_abstract_task_processor.AbstractUriCrawler):
                                                      key_segments_pairs),
                                                  'segment set',
                                                  'downloading...',
-                                                 'downloaded segments successfully!')
+                                                 'downloaded segments successfully!',
+                                                 tracker=self.tracker)
 
         key_url_encrypted_data_triple = list()
         with concurrent.futures.ThreadPoolExecutor(

@@ -25,7 +25,8 @@ class AbstractCrawler(object):
                  max_retry_times=3,
                  num_concurrent=50,
                  tmpdir=None,
-                 proxy=None
+                 proxy=None,
+                 tracker=None
                  ):
         self.m3u8_uri = m3u8_uri
         self.customized_http_header = customized_http_header
@@ -37,6 +38,7 @@ class AbstractCrawler(object):
 
         self.file_path = file_path
         self.proxy = proxy
+        self.tracker = tracker
 
     def __enter__(self):
         if self.tmpdir is None:
