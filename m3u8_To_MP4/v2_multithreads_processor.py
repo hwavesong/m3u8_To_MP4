@@ -12,9 +12,10 @@ from m3u8_To_MP4.helpers import printer_helper
 from m3u8_To_MP4.networks.synchronous.sync_http_requester import request_for
 
 
-def download_segment(segment_url, customized_http_header):
+def download_segment(segment_url, customized_http_header, proxy):
     response_code, response_content = request_for(segment_url,
-                                                  customized_http_header=customized_http_header)
+                                                  customized_http_header=customized_http_header,
+                                                  proxy=proxy)
 
     return response_code, response_content
 
@@ -38,7 +39,7 @@ class MultiThreadsFileCrawler(v2_abstract_task_processor.AbstractFileCrawler):
             while len(key_segments_pairs) > 0:
                 future_2_key_and_url = {
                 executor.submit(download_segment, segment_url,
-                                self.customized_http_header): (
+                                self.customized_http_header, self.proxy): (
                 key, segment_url) for key, segment_url in key_segments_pairs}
 
                 response_code, response_data = None, None
@@ -92,7 +93,8 @@ class MultiThreadsUriCrawler(v2_abstract_task_processor.AbstractUriCrawler):
                                                      key_segments_pairs),
                                                  'segment set',
                                                  'downloading...',
-                                                 'downloaded segments successfully!')
+                                                 'downloaded segments successfully!',
+                                                 tracker=self.tracker)
 
         key_url_encrypted_data_triple = list()
         with concurrent.futures.ThreadPoolExecutor(
@@ -100,7 +102,7 @@ class MultiThreadsUriCrawler(v2_abstract_task_processor.AbstractUriCrawler):
             while len(key_segments_pairs) > 0:
                 future_2_key_and_url = {
                 executor.submit(download_segment, segment_url,
-                                self.customized_http_header): (
+                                self.customized_http_header, self.proxy): (
                 key, segment_url) for key, segment_url in key_segments_pairs}
 
                 response_code, response_data = None, None

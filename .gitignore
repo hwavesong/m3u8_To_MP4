@@ -4,3 +4,4 @@
 ./m3u8_To_MP4.egg-info
 ./__pycache__
 *.pyc
+.env

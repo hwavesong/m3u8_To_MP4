@@ -10,7 +10,9 @@ class AsynchronousFileCrawler(v2_abstract_task_processor.AbstractFileCrawler):
                                                  key_segments_pairs,
                                                  self.available_addr_info_pool,
                                                  self.num_concurrent,
-                                                 self.tmpdir)
+                                                 self.tmpdir,
+                                                 self.proxy,
+                                                 self.tracker)
 
 
 class AsynchronousUriCrawler(v2_abstract_task_processor.AbstractUriCrawler):
@@ -20,4 +22,6 @@ class AsynchronousUriCrawler(v2_abstract_task_processor.AbstractUriCrawler):
                                                  key_segments_pairs,
                                                  self.available_addr_info_pool,
                                                  self.num_concurrent,
-                                                 self.tmpdir)
+                                                 self.tmpdir,
+                                                 self.proxy,
+                                                 self.tracker)

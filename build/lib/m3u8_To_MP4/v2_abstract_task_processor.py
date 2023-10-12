@@ -27,14 +27,15 @@ class M3u8PlaylistIsNoneException(Exception):
 class AbstractFileCrawler(AbstractCrawler):
     def __init__(self, m3u8_uri, m3u8_file_path, customized_http_header=None,
                  max_retry_times=3, num_concurrent=50, mp4_file_dir=None,
-                 mp4_file_name='m3u8-To-Mp4.mp4', tmpdir=None):
+                 mp4_file_name='m3u8-To-Mp4.mp4', tmpdir=None, proxy=None):
         file_path=os.path.join(mp4_file_dir,mp4_file_name)
         super(AbstractFileCrawler, self).__init__(m3u8_uri,
                                                   file_path,
                                                   customized_http_header,
                                                   max_retry_times,
                                                   num_concurrent,
-                                                  tmpdir)
+                                                  tmpdir,
+                                                  proxy)
         self.m3u8_file_path = m3u8_file_path
 
     def _read_m3u8_file(self):
@@ -52,7 +53,7 @@ class AbstractFileCrawler(AbstractCrawler):
 
                 response_code, encryped_value = sync_http.retrieve_resource_from_url(
                     self.best_addr_info, key.absolute_uri,
-                    customized_http_header=self.customized_http_header)
+                    customized_http_header=self.customized_http_header, proxy=self.proxy)
 
                 if response_code != 200:
                     raise Exception('DOWNLOAD KEY FAILED, URI IS {}'.format(
@@ -104,7 +105,7 @@ class AbstractUriCrawler(AbstractCrawler):
         try:
             response_code, m3u8_bytes = sync_http.retrieve_resource_from_url(
                 self.best_addr_info, self.m3u8_uri,
-                customized_http_header=self.customized_http_header)
+                customized_http_header=self.customized_http_header, proxy=self.proxy)
             if response_code != 200:
                 raise Exception(
                     'DOWNLOAD KEY FAILED, URI IS {}'.format(self.m3u8_uri))
@@ -150,7 +151,7 @@ class AbstractUriCrawler(AbstractCrawler):
 
                 response_code, encryped_value = sync_http.retrieve_resource_from_url(
                     self.best_addr_info, key.absolute_uri,
-                    customized_http_header=self.customized_http_header)
+                    customized_http_header=self.customized_http_header, proxy=self.proxy)
 
                 if response_code != 200:
                     raise Exception('DOWNLOAD KEY FAILED, URI IS {}'.format(
